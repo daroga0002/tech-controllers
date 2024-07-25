@@ -4,7 +4,6 @@ import asyncio
 import logging
 
 from aiohttp import ClientSession
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, CONF_TOKEN
 from homeassistant.core import HomeAssistant
