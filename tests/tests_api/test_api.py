@@ -502,7 +502,7 @@ class TestTechAPI:
         )
         assert authenticated, "Authentication should be successful"
 
-        dict = await tech.module_data(module_data["module_id"])
+        data = await tech.module_data(module_data["module_id"])
 
         with pytest.raises(TechError) as exception_info:
             response = await tech.set_const_temp(
@@ -511,7 +511,7 @@ class TestTechAPI:
                 module_data["target_temp"],
             )
             assert isinstance(
-                response, dict
+                response, data
             ), "The data returned should be a dictionary"
             assert "error" in response, "We should get an error key on demo account"
             assert (
@@ -588,14 +588,14 @@ class TestTechAPI:
         )
         assert authenticated, "Authentication should be successful"
 
-        dict = await tech.module_data(module_data["module_id"])
+        data = await tech.module_data(module_data["module_id"])
 
         with pytest.raises(TechError) as exception_info:
             response = await tech.set_zone(
                 module_data["module_id"], module_data["zone_id"], True
             )
             assert isinstance(
-                response, dict
+                response, data
             ), "The data returned should be a dictionary"
             assert "error" in response, "We should get an error key on demo account"
             assert (

@@ -203,6 +203,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=DATA_SCHEMA, errors=errors
         )
 
+    @staticmethod
     def _create_config_entry(self, controller: dict) -> ConfigEntry:
         return ConfigEntry(
             data=controller,
@@ -222,6 +223,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             for controller_dict in validated_input[CONTROLLERS]
         ]
 
+    @staticmethod
     def _create_controller_dict(
         self, validated_input: dict, controller_dict: dict
     ) -> dict:
