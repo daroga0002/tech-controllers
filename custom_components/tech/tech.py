@@ -6,6 +6,7 @@ import logging
 import time
 
 import aiohttp
+
 from .const import TECH_SUPPORTED_LANGUAGES
 
 logging.basicConfig(level=logging.DEBUG)

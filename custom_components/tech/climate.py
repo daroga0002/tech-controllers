@@ -3,7 +3,6 @@
 import logging
 from typing import Any
 
-from custom_components.tech import TechCoordinator
 from homeassistant.components.climate import (
     ClimateEntity,
     ClimateEntityFeature,
@@ -26,6 +25,8 @@ from homeassistant.const import (
 )
 from homeassistant.core import callback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from custom_components.tech import TechCoordinator
 
 from .const import CONTROLLER, DOMAIN, INCLUDE_HUB_IN_NAME, MANUFACTURER, UDID, VER
 

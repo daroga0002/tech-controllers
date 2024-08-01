@@ -1,7 +1,7 @@
 """TileEntity."""
 
-from abc import abstractmethod
 import logging
+from abc import abstractmethod
 from typing import Any
 
 from homeassistant.const import CONF_DESCRIPTION, CONF_ID, CONF_PARAMS, CONF_TYPE

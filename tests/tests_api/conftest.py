@@ -1,7 +1,7 @@
 """pytest fixtures."""
 
-from collections.abc import AsyncGenerator
 import json
+from collections.abc import AsyncGenerator
 
 import aiohttp
 import pytest

@@ -4,7 +4,6 @@ import asyncio
 import logging
 
 from aiohttp import ClientSession
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_NAME, CONF_TOKEN
 from homeassistant.core import HomeAssistant
@@ -30,7 +29,9 @@ _LOGGER = logging.getLogger(__name__)
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
-async def async_setup(hass: HomeAssistant, config: dict):  # pylint: disable=unused-argument
+async def async_setup(
+    hass: HomeAssistant, config: dict
+):  # pylint: disable=unused-argument
     """Set up the Tech Controllers component."""
     return True
 
