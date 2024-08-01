@@ -4,7 +4,6 @@ import logging
 import uuid
 
 import voluptuous as vol
-
 from homeassistant import config_entries, core, exceptions
 from homeassistant.config_entries import SOURCE_USER, ConfigEntry
 from homeassistant.const import (
@@ -15,7 +14,8 @@ from homeassistant.const import (
     CONF_USERNAME,
 )
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers import aiohttp_client, config_validation as cv
+from homeassistant.helpers import aiohttp_client
+from homeassistant.helpers import config_validation as cv
 
 from .const import (
     CONTROLLER,
@@ -203,6 +203,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=DATA_SCHEMA, errors=errors
         )
 
+    @staticmethod
     def _create_config_entry(self, controller: dict) -> ConfigEntry:
         return ConfigEntry(
             data=controller,
@@ -222,6 +223,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             for controller_dict in validated_input[CONTROLLERS]
         ]
 
+    @staticmethod
     def _create_controller_dict(
         self, validated_input: dict, controller_dict: dict
     ) -> dict:
