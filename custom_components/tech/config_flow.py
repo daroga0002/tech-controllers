@@ -17,6 +17,7 @@ from homeassistant.const import (
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import aiohttp_client, config_validation as cv
 
+from . import assets
 from .const import (
     CONTROLLER,
     CONTROLLERS,
@@ -122,46 +123,25 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self._abort_if_unique_id_configured()
 
             # process first set of controllers and add config entries for them
-            if len(controllers) > 1:
-                for controller_id in controllers[1 : len(controllers)]:
-                    controller = next(
-                        obj
-                        for obj in self._controllers
-                        if obj[CONTROLLER].get(ATTR_ID) == int(controller_id)
-                    )
-                    await self.async_set_unique_id(controller[CONTROLLER][UDID])
-
-                    controller[INCLUDE_HUB_IN_NAME] = include_name
-                    _LOGGER.debug("Adding config entry for: %s", controller)
-
-                    await self.hass.config_entries.async_add(
-                        self._create_config_entry(controller=controller)
-                    )
-
-            # process last controller and async create entry finishing the step
-            controller_udid = next(
-                obj
-                for obj in self._controllers
-                if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-            )[CONTROLLER][UDID]
-
-            await self.async_set_unique_id(controller_udid)
-
-            controller = next(
-                obj
-                for obj in self._controllers
-                if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-            )
-            controller[INCLUDE_HUB_IN_NAME] = include_name
-
-            return self.async_create_entry(
-                title=next(
+            for controller_id in controllers:
+                controller = next(
                     obj
                     for obj in self._controllers
-                    if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-                )[CONTROLLER][CONF_NAME],
-                data=controller,
-            )
+                    if obj[CONTROLLER].get(ATTR_ID) == int(controller_id)
+                )
+                await self.async_set_unique_id(controller[CONTROLLER][UDID])
+
+                controller[INCLUDE_HUB_IN_NAME] = include_name
+                _LOGGER.debug(
+                    "Adding config entry for: %s",
+                    assets.redact(controller, ["token"]),
+                )
+
+                await self.hass.config_entries.async_add(
+                    self._create_config_entry(controller=controller)
+                )
+
+            return True
 
     async def async_step_select_controllers(
         self,
