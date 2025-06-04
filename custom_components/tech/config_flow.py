@@ -89,7 +89,6 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     VERSION = 3
     MINOR_VERSION = 0
-    # Pick one of the available connection classes in homeassistant/config_entries.py
     CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
 
     def __init__(self) -> None:
@@ -97,79 +96,57 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._init_info: dict[str, Any] | None = None
         self._controllers: list[dict] | None = None
 
+    def _find_controller(self, controller_id: str) -> dict:
+        """Find controller by ID."""
+        return next(
+            obj
+            for obj in self._controllers
+            if obj[CONTROLLER].get(ATTR_ID) == int(controller_id)
+        )
+
     async def _async_finish_controller(
         self, user_input: dict[str, str]
     ) -> ConfigFlowResult:
         """Finish setting up controllers."""
+        if not self._controllers or not user_input:
+            return self.async_abort(reason="no_modules")
 
-        include_name: bool = INCLUDE_HUB_IN_NAME in user_input
+        controllers = user_input.get(CONTROLLERS, [])
+        if not controllers:
+            return self.async_abort(reason="no_modules")
 
-        if self._controllers is not None and user_input is not None:
-            if (
-                CONTROLLERS not in user_input
-                or not user_input[CONTROLLERS]
-                or len(user_input[CONTROLLERS]) == 0
-            ):
-                return self.async_abort(reason="no_modules")
+        include_name: bool = user_input.get(INCLUDE_HUB_IN_NAME, False)
 
-            controllers = user_input[CONTROLLERS]
+        # Check for existing controllers
+        for controller_id in controllers:
+            controller = self._find_controller(controller_id)
+            await self.async_set_unique_id(controller[CONTROLLER][UDID])
+            self._abort_if_unique_id_configured()
 
-            # check if we have any of the selected controllers already configured
-            # and abort if so
-            for controller_id in controllers:
-                controller = next(
-                    obj
-                    for obj in self._controllers
-                    if obj[CONTROLLER].get(ATTR_ID) == int(controller_id)
-                )
-                await self.async_set_unique_id(controller[CONTROLLER][UDID])
-                self._abort_if_unique_id_configured()
+        # Process additional controllers
+        for controller_id in controllers[1:]:
+            controller = self._find_controller(controller_id)
+            await self.async_set_unique_id(controller[CONTROLLER][UDID])
 
-            # process first set of controllers and add config entries for them
-            if len(controllers) > 1:
-                for controller_id in controllers[1 : len(controllers)]:
-                    controller = next(
-                        obj
-                        for obj in self._controllers
-                        if obj[CONTROLLER].get(ATTR_ID) == int(controller_id)
-                    )
-                    await self.async_set_unique_id(controller[CONTROLLER][UDID])
-
-                    controller[INCLUDE_HUB_IN_NAME] = include_name
-                    _LOGGER.debug(
-                        "Adding config entry for: %s",
-                        assets.redact(controller, ["token"]),
-                    )
-
-                    await self.hass.config_entries.async_add(
-                        self._create_config_entry(controller=controller)
-                    )
-
-            # process last controller and async create entry finishing the step
-            controller_udid = next(
-                obj
-                for obj in self._controllers
-                if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-            )[CONTROLLER][UDID]
-
-            await self.async_set_unique_id(controller_udid)
-
-            controller = next(
-                obj
-                for obj in self._controllers
-                if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-            )
             controller[INCLUDE_HUB_IN_NAME] = include_name
-
-            return self.async_create_entry(
-                title=next(
-                    obj
-                    for obj in self._controllers
-                    if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-                )[CONTROLLER][CONF_NAME],
-                data=controller,
+            _LOGGER.debug(
+                "Adding config entry for: %s",
+                assets.redact(controller, ["token"]),
             )
-        return self.async_abort(reason="no_modules")
+
+            await self.hass.config_entries.async_add(
+                self._create_config_entry(controller=controller)
+            )
+
+        # Process first controller
+        first_controller = self._find_controller(controllers[0])
+        first_controller[INCLUDE_HUB_IN_NAME] = include_name
+        await self.async_set_unique_id(first_controller[CONTROLLER][UDID])
+
+        return self.async_create_entry(
+            title=first_controller[CONTROLLER][CONF_NAME],
+            data=first_controller,
+        )
 
     async def async_step_select_controllers(
         self,
@@ -197,10 +174,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             try:
                 info = await validate_input(self.hass, user_input)
-
-                # Store info to use in next step
                 self._init_info = info
-
                 return await self.async_step_select_controllers()
             except TechLoginError:
                 errors["base"] = "invalid_auth"
@@ -241,7 +215,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             USER_ID: validated_input[USER_ID],
             CONF_TOKEN: validated_input[CONF_TOKEN],
             CONTROLLER: controller_dict,
-            VER: controller_dict[VER] + ": " + controller_dict[CONF_NAME],
+            VER: f"{controller_dict[VER]}: {controller_dict[CONF_NAME]}",
         }
 
 
