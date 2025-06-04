@@ -4,6 +4,8 @@ import asyncio
 import json
 import logging
 import time
+from typing import Dict, Any, List, Callable
+from functools import wraps
 
 import aiohttp
 
@@ -11,6 +13,18 @@ from .const import TECH_SUPPORTED_LANGUAGES
 
 logging.basicConfig(level=logging.DEBUG)
 _LOGGER = logging.getLogger(__name__)
+
+
+def require_auth(func: Callable) -> Callable:
+    """Decorator to check authentication before API calls."""
+
+    @wraps(func)
+    async def wrapper(self, *args, **kwargs):
+        if not self.authenticated:
+            raise TechError(401, "Unauthorized")
+        return await func(self, *args, **kwargs)
+
+    return wrapper
 
 
 class Tech:
@@ -48,6 +62,32 @@ class Tech:
         self.last_update = None
         self.update_lock = asyncio.Lock()
         self.modules = {}
+
+    def _filter_zones(self, zones: List[Dict]) -> List[Dict]:
+        """Filter valid zones from the list.
+
+        Args:
+            zones: List of zone dictionaries
+
+        Returns:
+            List of filtered valid zones
+        """
+        return [
+            z
+            for z in zones
+            if z and "zone" in z and z["zone"] and "visibility" in z["zone"]
+        ]
+
+    def _filter_tiles(self, tiles: List[Dict]) -> List[Dict]:
+        """Filter visible tiles from the list.
+
+        Args:
+            tiles: List of tile dictionaries
+
+        Returns:
+            List of filtered visible tiles
+        """
+        return [t for t in tiles if t.get("visibility")]
 
     async def get(self, request_path):
         """Perform a GET request to the specified request path.
@@ -87,9 +127,10 @@ class Tech:
         """
         url = self.base_url + request_path
         _LOGGER.debug("Sending POST request: %s", url)
-        async with self.session.post(
-            url, data=post_data, headers=self.headers
-        ) as response:
+        headers = self.headers.copy()
+        if isinstance(post_data, str):
+            headers["Content-Type"] = "application/json"
+        async with self.session.post(url, data=post_data, headers=headers) as response:
             if response.status != 200:
                 _LOGGER.warning("Invalid response from Tech API: %s", response.status)
                 raise TechError(response.status, await response.text())
@@ -124,6 +165,7 @@ class Tech:
             raise TechLoginError(401, "Unauthorized") from err
         return result["authenticated"]
 
+    @require_auth
     async def list_modules(self):
         """Retrieve the list of modules for the authenticated user.
 
@@ -134,17 +176,10 @@ class Tech:
             TechError: If the user is not authenticated.
 
         """
-        if self.authenticated:
-            # Construct the path for the user's modules
-            path = f"users/{self.user_id}/modules"
-            # Make a GET request to retrieve the modules
-            result = await self.get(path)
-        else:
-            # Raise an error if the user is not authenticated
-            raise TechError(401, "Unauthorized")
-        return result
+        path = f"users/{self.user_id}/modules"
+        return await self.get(path)
 
-    # Asynchronous function to retrieve module data
+    @require_auth
     async def get_module_data(self, module_udid):
         """Retrieve module data for a given module ID.
 
@@ -158,14 +193,10 @@ class Tech:
         TechError: If not authenticated, raise 401 Unauthorized error.
 
         """
-        _LOGGER.debug("Getting module data...  %s", module_udid)
-        if self.authenticated:
-            path = f"users/{self.user_id}/modules/{module_udid}"
-            result = await self.get(path)
-        else:
-            raise TechError(401, "Unauthorized")
-        return result
+        path = f"users/{self.user_id}/modules/{module_udid}"
+        return await self.get(path)
 
+    @require_auth
     async def get_translations(self, language):
         """Retrieve language pack for a given language.
 
@@ -190,13 +221,10 @@ class Tech:
 
         _LOGGER.debug("Getting %s language", language)
 
-        if self.authenticated:
-            path = f"i18n/{language}"
-            result = await self.get(path)
-        else:
-            raise TechError(401, "Unauthorized")
-        return result
+        path = f"i18n/{language}"
+        return await self.get(path)
 
+    @require_auth
     async def get_module_zones(self, module_udid):
         """Return Tech module zones.
 
@@ -212,23 +240,16 @@ class Tech:
         """
 
         _LOGGER.debug("Updating module zones ... %s", module_udid)
+        if module_udid not in self.modules:
+            self.modules[module_udid] = {"last_update": None, "zones": {}, "tiles": {}}
         result = await self.get_module_data(module_udid)
-        zones = result["zones"]["elements"]
-        zones = list(
-            filter(
-                lambda e: e is not None
-                and "zone" in e
-                and e["zone"] is not None
-                and "visibility" in e["zone"],
-                zones,
-            )
-        )
-
+        zones = self._filter_zones(result["zones"]["elements"])
+        self.modules[module_udid]["zones"].clear()
         for zone in zones:
             self.modules[module_udid]["zones"][zone["zone"]["id"]] = zone
-
         return self.modules[module_udid]["zones"]
 
+    @require_auth
     async def get_module_tiles(self, module_udid):
         """Return Tech module tiles.
 
@@ -244,15 +265,16 @@ class Tech:
         """
 
         _LOGGER.debug("Updating module tiles ... %s", module_udid)
+        if module_udid not in self.modules:
+            self.modules[module_udid] = {"last_update": None, "zones": {}, "tiles": {}}
         result = await self.get_module_data(module_udid)
-        tiles = result["tiles"]
-        tiles = list(filter(lambda e: e["visibility"], tiles))
-
+        tiles = self._filter_tiles(result["tiles"])
+        self.modules[module_udid]["tiles"].clear()
         for tile in tiles:
             self.modules[module_udid]["tiles"][tile["id"]] = tile
-
         return self.modules[module_udid]["tiles"]
 
+    @require_auth
     async def module_data(self, module_udid):
         """Update Tech module zones and tiles.
 
@@ -260,53 +282,39 @@ class Tech:
         zones and tiles data.
 
         Args:
-        self (Tech): The instance of the Tech API.
-        module_udid (string): The Tech module udid.
+            module_udid (string): The Tech module udid.
 
         Returns:
-        Dictionary of zones and tiles indexed by zone ID.
-
+            Dictionary of zones and tiles indexed by zone ID.
         """
         now = time.time()
-
         self.modules.setdefault(
             module_udid, {"last_update": None, "zones": {}, "tiles": {}}
         )
-
         _LOGGER.debug("Updating module zones & tiles ... %s", module_udid)
         result = await self.get_module_data(module_udid)
-        zones = result["zones"]["elements"]
-        zones = list(
-            filter(
-                lambda e: e is not None
-                and "zone" in e
-                and e["zone"] is not None
-                and "visibility" in e["zone"],
-                zones,
-            )
-        )
-
-        if len(zones) > 0:
-            _LOGGER.debug("Updating zones for controller: %s", module_udid)
-            zones = list(
-                filter(
-                    lambda e: e is not None
-                    and "zone" in e
-                    and e["zone"] is not None
-                    and "zoneState" in e["zone"]
-                    and e["zone"]["zoneState"] != "zoneUnregistered",
-                    zones,
-                )
-            )
-            for zone in zones:
-                self.modules[module_udid]["zones"][zone["zone"]["id"]] = zone
-        tiles = result["tiles"]
-        tiles = list(filter(lambda e: e["visibility"], tiles))
-
-        if len(tiles) > 0:
-            _LOGGER.debug("Updating tiles for controller: %s", module_udid)
-            for tile in tiles:
-                self.modules[module_udid]["tiles"][tile["id"]] = tile
+        zones_elements = result.get("zones", {}).get("elements", [])
+        if zones_elements:
+            zones = self._filter_zones(zones_elements)
+            registered_zones = [
+                z
+                for z in zones
+                if z
+                and "zone" in z
+                and z["zone"]
+                and z["zone"].get("zoneState") != "zoneUnregistered"
+            ]
+            zones_dict = self.modules[module_udid]["zones"]
+            zones_dict.clear()
+            for zone in registered_zones:
+                zones_dict[zone["zone"]["id"]] = zone
+        tiles = result.get("tiles", [])
+        if tiles:
+            visible_tiles = self._filter_tiles(tiles)
+            tiles_dict = self.modules[module_udid]["tiles"]
+            tiles_dict.clear()
+            for tile in visible_tiles:
+                tiles_dict[tile["id"]] = tile
         self.modules[module_udid]["last_update"] = now
         return self.modules[module_udid]
 
@@ -321,6 +329,11 @@ class Tech:
         Dictionary of zone.
 
         """
+        if (
+            module_udid in self.modules
+            and zone_id in self.modules[module_udid]["zones"]
+        ):
+            return self.modules[module_udid]["zones"][zone_id]
         await self.get_module_zones(module_udid)
         return self.modules[module_udid]["zones"][zone_id]
 
@@ -335,9 +348,15 @@ class Tech:
         Dictionary of tile.
 
         """
+        if (
+            module_udid in self.modules
+            and tile_id in self.modules[module_udid]["tiles"]
+        ):
+            return self.modules[module_udid]["tiles"][tile_id]
         await self.get_module_tiles(module_udid)
         return self.modules[module_udid]["tiles"][tile_id]
 
+    @require_auth
     async def set_const_temp(self, module_udid, zone_id, target_temp):
         """Set constant temperature of the zone.
 
@@ -351,25 +370,28 @@ class Tech:
 
         """
         _LOGGER.debug("Setting zone constant temperature…")
-        if self.authenticated:
-            path = f"users/{self.user_id}/modules/{module_udid}/zones"
-            data = {
-                "mode": {
-                    "id": self.modules[module_udid]["zones"][zone_id]["mode"]["id"],
-                    "parentId": zone_id,
-                    "mode": "constantTemp",
-                    "constTempTime": 60,
-                    "setTemperature": int(target_temp * 10),
-                    "scheduleIndex": 0,
-                }
+        if (
+            module_udid not in self.modules
+            or zone_id not in self.modules[module_udid]["zones"]
+        ):
+            await self.get_zone(module_udid, zone_id)
+        path = f"users/{self.user_id}/modules/{module_udid}/zones"
+        data = {
+            "mode": {
+                "id": self.modules[module_udid]["zones"][zone_id]["mode"]["id"],
+                "parentId": zone_id,
+                "mode": "constantTemp",
+                "constTempTime": 60,
+                "setTemperature": int(target_temp * 10),
+                "scheduleIndex": 0,
             }
-            _LOGGER.debug(data)
-            result = await self.post(path, json.dumps(data))
-            _LOGGER.debug(result)
-        else:
-            raise TechError(401, "Unauthorized")
+        }
+        _LOGGER.debug(data)
+        result = await self.post(path, json.dumps(data))
+        _LOGGER.debug(result)
         return result
 
+    @require_auth
     async def set_zone(self, module_udid, zone_id, on=True):
         """Turn the zone on or off.
 
@@ -383,14 +405,11 @@ class Tech:
 
         """
         _LOGGER.debug("Turing zone on/off: %s", on)
-        if self.authenticated:
-            path = f"users/{self.user_id}/modules/{module_udid}/zones"
-            data = {"zone": {"id": zone_id, "zoneState": "zoneOn" if on else "zoneOff"}}
-            _LOGGER.debug(data)
-            result = await self.post(path, json.dumps(data))
-            _LOGGER.debug(result)
-        else:
-            raise TechError(401, "Unauthorized")
+        path = f"users/{self.user_id}/modules/{module_udid}/zones"
+        data = {"zone": {"id": zone_id, "zoneState": "zoneOn" if on else "zoneOff"}}
+        _LOGGER.debug(data)
+        result = await self.post(path, json.dumps(data))
+        _LOGGER.debug(result)
         return result
 
 
