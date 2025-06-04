@@ -1,11 +1,11 @@
 """Python wrapper for getting interaction with Tech devices."""
 
 import asyncio
+from collections.abc import Callable
+from functools import wraps
 import json
 import logging
 import time
-from typing import Dict, Any, List, Callable
-from functools import wraps
 
 import aiohttp
 
@@ -16,7 +16,20 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def require_auth(func: Callable) -> Callable:
-    """Decorator to check authentication before API calls."""
+    """Check authentication before API calls.
+
+    This decorator ensures the user is authenticated before making API calls.
+
+    Args:
+        func: The function to decorate
+
+    Returns:
+        The wrapped function that checks authentication
+
+    Raises:
+        TechError: If not authenticated
+
+    """
 
     @wraps(func)
     async def wrapper(self, *args, **kwargs):
@@ -63,7 +76,7 @@ class Tech:
         self.update_lock = asyncio.Lock()
         self.modules = {}
 
-    def _filter_zones(self, zones: List[Dict]) -> List[Dict]:
+    def _filter_zones(self, zones: list[dict]) -> list[dict]:
         """Filter valid zones from the list.
 
         Args:
@@ -71,6 +84,7 @@ class Tech:
 
         Returns:
             List of filtered valid zones
+
         """
         return [
             z
@@ -78,7 +92,7 @@ class Tech:
             if z and "zone" in z and z["zone"] and "visibility" in z["zone"]
         ]
 
-    def _filter_tiles(self, tiles: List[Dict]) -> List[Dict]:
+    def _filter_tiles(self, tiles: list[dict]) -> list[dict]:
         """Filter visible tiles from the list.
 
         Args:
@@ -86,6 +100,7 @@ class Tech:
 
         Returns:
             List of filtered visible tiles
+
         """
         return [t for t in tiles if t.get("visibility")]
 
@@ -286,6 +301,7 @@ class Tech:
 
         Returns:
             Dictionary of zones and tiles indexed by zone ID.
+
         """
         now = time.time()
         self.modules.setdefault(
