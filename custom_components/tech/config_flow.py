@@ -226,6 +226,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             source=SOURCE_USER,
             options={},
             unique_id=None,
+            subentries_data={},
         )
 
     def _create_controllers_array(self, validated_input: dict[str, Any]) -> list[dict]:

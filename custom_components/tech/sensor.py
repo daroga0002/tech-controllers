@@ -1508,11 +1508,12 @@ class TileTextSensor(TileSensor, SensorEntity):
     def __init__(self, device, coordinator, config_entry) -> None:
         """Initialize the sensor."""
         TileSensor.__init__(self, device, coordinator, config_entry)
+        translation_manager = assets.get_translation_manager()
         self._name = (
             self._config_entry.title + " "
             if self._config_entry.data[INCLUDE_HUB_IN_NAME]
             else ""
-        ) + assets.get_text(device[CONF_PARAMS]["headerId"])
+        ) + translation_manager.get_text(device[CONF_PARAMS]["headerId"])
 
         self._attr_icon = assets.get_icon(device[CONF_PARAMS]["iconId"])
 
@@ -1528,7 +1529,8 @@ class TileTextSensor(TileSensor, SensorEntity):
 
     def get_state(self, device) -> Any:
         """Get the state of the device."""
-        return assets.get_text(device[CONF_PARAMS]["statusId"])
+        translation_manager = assets.get_translation_manager()
+        return translation_manager.get_text(device[CONF_PARAMS]["statusId"])
 
 
 class TileWidgetSensor(TileSensor, SensorEntity):
@@ -1541,11 +1543,12 @@ class TileWidgetSensor(TileSensor, SensorEntity):
     def __init__(self, device, coordinator, config_entry) -> None:
         """Initialize the sensor."""
         TileSensor.__init__(self, device, coordinator, config_entry)
+        translation_manager = assets.get_translation_manager()
         self._name = (
             self._config_entry.title + " "
             if self._config_entry.data[INCLUDE_HUB_IN_NAME]
             else ""
-        ) + assets.get_text(device[CONF_PARAMS]["widget1"]["txtId"])
+        ) + translation_manager.get_text(device[CONF_PARAMS]["widget1"]["txtId"])
 
     @property
     def unique_id(self) -> str:
@@ -1572,11 +1575,12 @@ class TileValveSensor(TileSensor, SensorEntity):
         self.state_class = SensorStateClass.MEASUREMENT
         self._valve_number = device[CONF_PARAMS]["valveNumber"]
         self._attr_icon = assets.get_icon_by_type(device[CONF_TYPE])
+        translation_manager = assets.get_translation_manager()
         self._name = (
             self._config_entry.title + " "
             if self._config_entry.data[INCLUDE_HUB_IN_NAME]
             else ""
-        ) + assets.get_text_by_type(device[CONF_TYPE])
+        ) + translation_manager.get_text_by_type(device[CONF_TYPE])
 
         self.attrs: dict[str, Any] = {}
 
@@ -1634,12 +1638,13 @@ class TileValveTemperatureSensor(TileSensor, SensorEntity):
         self.native_unit_of_measurement = UnitOfTemperature.CELSIUS
         self.state_class = SensorStateClass.MEASUREMENT
         self._valve_number = device[CONF_PARAMS]["valveNumber"]
-        sensor_name = assets.get_text(valve_sensor["txt_id"])
+        translation_manager = assets.get_translation_manager()
+        sensor_name = translation_manager.get_text(valve_sensor["txt_id"])
         name = (
             self._config_entry.title + " "
             if self._config_entry.data[INCLUDE_HUB_IN_NAME]
             else ""
-        ) + assets.get_text_by_type(device[CONF_TYPE])
+        ) + translation_manager.get_text_by_type(device[CONF_TYPE])
         self._name = f"{name} {device[CONF_PARAMS]['valveNumber']} {sensor_name}"
 
     @property
@@ -1673,11 +1678,12 @@ class TileMixingValveSensor(TileSensor, SensorEntity):
         self.state_class = SensorStateClass.MEASUREMENT
         self._valve_number = device[CONF_PARAMS]["valveNumber"]
         self._attr_icon = assets.get_icon_by_type(device[CONF_TYPE])
+        translation_manager = assets.get_translation_manager()
         self._name = (
             self._config_entry.title + " "
             if self._config_entry.data[INCLUDE_HUB_IN_NAME]
             else ""
-        ) + assets.get_text_by_type(device[CONF_TYPE])
+        ) + translation_manager.get_text_by_type(device[CONF_TYPE])
 
     @property
     def unique_id(self) -> str:
@@ -1720,9 +1726,8 @@ class TileOpenThermSensor(TileSensor, SensorEntity):
         self.device_class = SensorDeviceClass.TEMPERATURE
         self.state_class = SensorStateClass.MEASUREMENT
         self.manufacturer = MANUFACTURER
-        self.device_name = (
-            f"{self._config_entry.title} {assets.get_text_by_type(device[CONF_TYPE])}"
-        )
+        translation_manager = assets.get_translation_manager()
+        self.device_name = f"{self._config_entry.title} {translation_manager.get_text_by_type(device[CONF_TYPE])}"
         self.model = (
             config_entry.data[CONTROLLER][CONF_NAME]
             + ": "
@@ -1732,7 +1737,7 @@ class TileOpenThermSensor(TileSensor, SensorEntity):
             self._config_entry.title + " "
             if self._config_entry.data[INCLUDE_HUB_IN_NAME]
             else ""
-        ) + assets.get_text(self._txt_id)
+        ) + translation_manager.get_text(self._txt_id)
 
     @property
     def name(self) -> str | UndefinedType | None:

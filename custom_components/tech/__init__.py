@@ -47,7 +47,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await coordinator.async_config_entry_first_refresh()
 
-    await assets.load_subtitles(language_code, Tech(websession, user_id, token))
+    # Load translations using the new TranslationManager to avoid deprecation warning
+    translation_manager = assets.get_translation_manager()
+    await translation_manager.load_translations(
+        language_code, Tech(websession, user_id, token)
+    )
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
