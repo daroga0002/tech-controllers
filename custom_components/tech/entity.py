@@ -40,10 +40,13 @@ class TileEntity(
             self._name = self._config_entry.title + " "
         else:
             self._name = ""
+
+        # Use the new TranslationManager instead of deprecated functions
+        translation_manager = assets.get_translation_manager()
         if txt_id:
-            self._name += assets.get_text(txt_id)
+            self._name += translation_manager.get_text(txt_id)
         else:
-            self._name += assets.get_text_by_type(device[CONF_TYPE])
+            self._name += translation_manager.get_text_by_type(device[CONF_TYPE])
 
     @property
     def unique_id(self) -> str:
