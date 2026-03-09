@@ -101,6 +101,16 @@ class Tech:
 
             return await response.json()
 
+    def _require_authenticated(self) -> None:
+        """Raise :exc:`TechError` when the client is not authenticated.
+
+        Raises:
+            TechError: If ``self.authenticated`` is ``False``.
+
+        """
+        if not self.authenticated:
+            raise TechError(401, "Unauthorized")
+
     async def authenticate(self, username: str, password: str) -> bool:
         """Authenticate the user with the provided credentials.
 
@@ -112,7 +122,8 @@ class Tech:
             ``True`` when authentication succeeded.
 
         Raises:
-            TechLoginError: When the API returns an authentication error.
+            TechLoginError: When the API returns an authentication error or the
+                response is missing expected fields.
 
         """
         path = "authentication"
@@ -128,9 +139,9 @@ class Tech:
                     "Accept-Encoding": "gzip",
                     "Authorization": f"Bearer {self.token}",
                 }
-        except TechError as err:
+        except (TechError, KeyError) as err:
             raise TechLoginError(401, "Unauthorized") from err
-        return result["authenticated"]
+        return self.authenticated
 
     async def list_modules(self) -> dict[str, Any]:
         """Return the list of modules available for the authenticated user.
@@ -142,15 +153,9 @@ class Tech:
             TechError: If the client is not currently authenticated.
 
         """
-        if self.authenticated:
-            # Construct the path for the user's modules
-            path = f"users/{self.user_id}/modules"
-            # Make a GET request to retrieve the modules
-            result = await self.get(path)
-        else:
-            # Raise an error if the user is not authenticated
-            raise TechError(401, "Unauthorized")
-        return result
+        self._require_authenticated()
+        path = f"users/{self.user_id}/modules"
+        return await self.get(path)
 
     # Asynchronous function to retrieve module data
     async def get_module_data(self, module_udid: str) -> dict[str, Any]:
@@ -167,12 +172,9 @@ class Tech:
 
         """
         _LOGGER.debug("Getting module data...  %s", module_udid)
-        if self.authenticated:
-            path = f"users/{self.user_id}/modules/{module_udid}"
-            result = await self.get(path)
-        else:
-            raise TechError(401, "Unauthorized")
-        return result
+        self._require_authenticated()
+        path = f"users/{self.user_id}/modules/{module_udid}"
+        return await self.get(path)
 
     async def get_translations(self, language: str) -> dict[str, Any]:
         """Retrieve the translation pack for ``language``.
@@ -196,12 +198,9 @@ class Tech:
 
         _LOGGER.debug("Getting %s language", language)
 
-        if self.authenticated:
-            path = f"i18n/{language}"
-            result = await self.get(path)
-        else:
-            raise TechError(401, "Unauthorized")
-        return result
+        self._require_authenticated()
+        path = f"i18n/{language}"
+        return await self.get(path)
 
     async def get_module_zones(self, module_udid: str) -> dict[int, dict[str, Any]]:
         """Return the cached zones dictionary for ``module_udid``.
@@ -241,42 +240,43 @@ class Tech:
             Dictionary containing ``zones`` and ``tiles`` entries.
 
         """
-        now = time.time()
+        async with self.update_lock:
+            now = time.time()
 
-        cache = self.modules.setdefault(
-            module_udid, {"last_update": None, "zones": {}, "tiles": {}}
-        )
-
-        _LOGGER.debug("Updating module zones & tiles ... %s", module_udid)
-        result = await self.get_module_data(module_udid)
-
-        raw_zones = result.get("zones", {}).get("elements", [])
-        visible_zones = [
-            zone
-            for zone in raw_zones
-            if zone
-            and zone.get("zone")
-            and zone["zone"].get("visibility")
-            and zone["zone"].get("zoneState") != "zoneUnregistered"
-        ]
-
-        if visible_zones:
-            _LOGGER.debug(
-                "Updating %s zones for controller: %s", len(visible_zones), module_udid
+            cache = self.modules.setdefault(
+                module_udid, {"last_update": None, "zones": {}, "tiles": {}}
             )
-            cache["zones"].update({zone["zone"]["id"]: zone for zone in visible_zones})
 
-        raw_tiles = result.get("tiles", [])
-        visible_tiles = [tile for tile in raw_tiles if tile and tile.get("visibility")]
+            _LOGGER.debug("Updating module zones & tiles ... %s", module_udid)
+            result = await self.get_module_data(module_udid)
 
-        if visible_tiles:
-            _LOGGER.debug(
-                "Updating %s tiles for controller: %s", len(visible_tiles), module_udid
-            )
-            cache["tiles"].update({tile["id"]: tile for tile in visible_tiles})
+            raw_zones = result.get("zones", {}).get("elements", [])
+            visible_zones = [
+                zone
+                for zone in raw_zones
+                if zone
+                and zone.get("zone")
+                and zone["zone"].get("visibility")
+                and zone["zone"].get("zoneState") != "zoneUnregistered"
+            ]
 
-        cache["last_update"] = now
-        return cache
+            if visible_zones:
+                _LOGGER.debug(
+                    "Updating %s zones for controller: %s", len(visible_zones), module_udid
+                )
+                cache["zones"].update({zone["zone"]["id"]: zone for zone in visible_zones})
+
+            raw_tiles = result.get("tiles", [])
+            visible_tiles = [tile for tile in raw_tiles if tile and tile.get("visibility")]
+
+            if visible_tiles:
+                _LOGGER.debug(
+                    "Updating %s tiles for controller: %s", len(visible_tiles), module_udid
+                )
+                cache["tiles"].update({tile["id"]: tile for tile in visible_tiles})
+
+            cache["last_update"] = now
+            return cache
 
     async def get_zone(self, module_udid, zone_id):
         """Return a single zone payload.
@@ -319,23 +319,21 @@ class Tech:
 
         """
         _LOGGER.debug("Setting zone constant temperature…")
-        if self.authenticated:
-            path = f"users/{self.user_id}/modules/{module_udid}/zones"
-            data = {
-                "mode": {
-                    "id": self.modules[module_udid]["zones"][zone_id]["mode"]["id"],
-                    "parentId": zone_id,
-                    "mode": "constantTemp",
-                    "constTempTime": 60,
-                    "setTemperature": int(target_temp * 10),
-                    "scheduleIndex": 0,
-                }
+        self._require_authenticated()
+        path = f"users/{self.user_id}/modules/{module_udid}/zones"
+        data = {
+            "mode": {
+                "id": self.modules[module_udid]["zones"][zone_id]["mode"]["id"],
+                "parentId": zone_id,
+                "mode": "constantTemp",
+                "constTempTime": 60,
+                "setTemperature": int(target_temp * 10),
+                "scheduleIndex": 0,
             }
-            _LOGGER.debug(data)
-            result = await self.post(path, json.dumps(data))
-            _LOGGER.debug(result)
-        else:
-            raise TechError(401, "Unauthorized")
+        }
+        _LOGGER.debug(data)
+        result = await self.post(path, json.dumps(data))
+        _LOGGER.debug(result)
         return result
 
     async def set_zone(self, module_udid, zone_id, on=True):
@@ -351,14 +349,12 @@ class Tech:
 
         """
         _LOGGER.debug("Turing zone on/off: %s", on)
-        if self.authenticated:
-            path = f"users/{self.user_id}/modules/{module_udid}/zones"
-            data = {"zone": {"id": zone_id, "zoneState": "zoneOn" if on else "zoneOff"}}
-            _LOGGER.debug(data)
-            result = await self.post(path, json.dumps(data))
-            _LOGGER.debug(result)
-        else:
-            raise TechError(401, "Unauthorized")
+        self._require_authenticated()
+        path = f"users/{self.user_id}/modules/{module_udid}/zones"
+        data = {"zone": {"id": zone_id, "zoneState": "zoneOn" if on else "zoneOff"}}
+        _LOGGER.debug(data)
+        result = await self.post(path, json.dumps(data))
+        _LOGGER.debug(result)
         return result
 
 

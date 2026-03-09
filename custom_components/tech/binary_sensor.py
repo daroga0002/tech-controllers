@@ -58,7 +58,7 @@ async def async_setup_entry(
             continue
         if tile[CONF_TYPE] == TYPE_RELAY:
             entities.append(RelaySensor(tile, coordinator, config_entry))
-        if tile[CONF_TYPE] == TYPE_FIRE_SENSOR:
+        elif tile[CONF_TYPE] == TYPE_FIRE_SENSOR:
             entities.append(
                 RelaySensor(
                     tile,
@@ -67,7 +67,7 @@ async def async_setup_entry(
                     binary_sensor.BinarySensorDeviceClass.MOTION,
                 )
             )
-        if tile[CONF_TYPE] == TYPE_ADDITIONAL_PUMP:
+        elif tile[CONF_TYPE] == TYPE_ADDITIONAL_PUMP:
             entities.append(RelaySensor(tile, coordinator, config_entry))
 
     async_add_entities(entities, True)

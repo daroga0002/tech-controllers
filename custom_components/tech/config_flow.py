@@ -128,7 +128,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         """
 
-        include_name: bool = INCLUDE_HUB_IN_NAME in user_input
+        include_name: bool = user_input.get(INCLUDE_HUB_IN_NAME, False)
 
         if self._controllers is not None and user_input is not None:
             if (
@@ -153,13 +153,12 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             # process first set of controllers and add config entries for them
             if len(controllers) > 1:
-                for controller_id in controllers[1 : len(controllers)]:
+                for controller_id in controllers[1:]:
                     controller = next(
                         obj
                         for obj in self._controllers
                         if obj[CONTROLLER].get(ATTR_ID) == int(controller_id)
                     )
-                    await self.async_set_unique_id(controller[CONTROLLER][UDID])
 
                     controller[INCLUDE_HUB_IN_NAME] = include_name
                     _LOGGER.debug(
@@ -168,31 +167,26 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     )
 
                     await self.hass.config_entries.async_add(
-                        self._create_config_entry(controller=controller)
+                        self._create_config_entry(
+                            controller=controller,
+                            udid=controller[CONTROLLER][UDID],
+                        )
                     )
 
             # process last controller and async create entry finishing the step
-            controller_udid = next(
-                obj
-                for obj in self._controllers
-                if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-            )[CONTROLLER][UDID]
-
-            await self.async_set_unique_id(controller_udid)
-
             controller = next(
                 obj
                 for obj in self._controllers
                 if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
             )
+            controller_udid = controller[CONTROLLER][UDID]
+
+            await self.async_set_unique_id(controller_udid)
+
             controller[INCLUDE_HUB_IN_NAME] = include_name
 
             return self.async_create_entry(
-                title=next(
-                    obj
-                    for obj in self._controllers
-                    if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-                )[CONTROLLER][CONF_NAME],
+                title=controller[CONTROLLER][CONF_NAME],
                 data=controller,
             )
         return self.async_abort(reason="no_modules")
@@ -256,11 +250,13 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=DATA_SCHEMA, errors=errors
         )
 
-    def _create_config_entry(self, controller: dict) -> ConfigEntry:
+    def _create_config_entry(self, controller: dict, udid: str | None = None) -> ConfigEntry:
         """Instantiate an in-memory config entry for ``controller``.
 
         Args:
             controller: Controller payload returned by the Tech API.
+            udid: Controller UDID used as the config entry unique identifier.
+                When omitted the entry is created without a unique id.
 
         Returns:
             Unsaved :class:`ConfigEntry` instance mirroring ``controller``.
@@ -276,7 +272,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             minor_version=ConfigFlow.MINOR_VERSION,
             source=SOURCE_USER,
             options={},
-            unique_id=None,
+            unique_id=udid,
             subentries_data=[],
         )
 
