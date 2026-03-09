@@ -128,7 +128,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         """
 
-        include_name: bool = INCLUDE_HUB_IN_NAME in user_input
+        include_name: bool = user_input.get(INCLUDE_HUB_IN_NAME, False)
 
         if self._controllers is not None and user_input is not None:
             if (
@@ -153,7 +153,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             # process first set of controllers and add config entries for them
             if len(controllers) > 1:
-                for controller_id in controllers[1 : len(controllers)]:
+                for controller_id in controllers[1:]:
                     controller = next(
                         obj
                         for obj in self._controllers
@@ -172,27 +172,19 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     )
 
             # process last controller and async create entry finishing the step
-            controller_udid = next(
-                obj
-                for obj in self._controllers
-                if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-            )[CONTROLLER][UDID]
-
-            await self.async_set_unique_id(controller_udid)
-
             controller = next(
                 obj
                 for obj in self._controllers
                 if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
             )
+            controller_udid = controller[CONTROLLER][UDID]
+
+            await self.async_set_unique_id(controller_udid)
+
             controller[INCLUDE_HUB_IN_NAME] = include_name
 
             return self.async_create_entry(
-                title=next(
-                    obj
-                    for obj in self._controllers
-                    if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-                )[CONTROLLER][CONF_NAME],
+                title=controller[CONTROLLER][CONF_NAME],
                 data=controller,
             )
         return self.async_abort(reason="no_modules")
