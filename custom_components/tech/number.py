@@ -205,9 +205,9 @@ class MenuNumberEntity(CoordinatorEntity, NumberEntity):
         controller rejected the change the entity will revert by then.
         """
         if self._format == VALUE_FORMAT_TENTH:
-            api_value = int(value * 10)
+            api_value = round(value * 10)
         else:
-            api_value = int(value)
+            api_value = round(value)
 
         await self.coordinator.api.set_menu_value(
             self._udid, self._menu_type, self._item_id, {"value": api_value}
