@@ -101,8 +101,6 @@ class TechThermostat(ClimateEntity, CoordinatorEntity):
         self._temperature = None
         self._target_temperature = None
         self.update_properties(device)
-        # Remove the line below after HA 2025.1
-        self._enable_turn_on_off_backwards_compatibility = False
 
     @property
     def device_info(self) -> DeviceInfo | None:
