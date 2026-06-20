@@ -59,11 +59,52 @@ Sometimes it can also be helpful to get Home Assistant config entries, device re
 
 ## Developing
 
-By default this integration follows [Home Assistant Development Workflow](https://developers.home-assistant.io/docs/development_environment) using VSCode + devcontainer.
+Dependencies are managed with [uv](https://docs.astral.sh/uv/). All dependencies and dependency groups are declared in `pyproject.toml` and pinned in `uv.lock`, so every environment installs exactly the same, reproducible set of packages.
 
-Additionally, if you are using [nix](https://nixos.org/) you can use [devenv](https://devenv.sh/) and [direnv](https://direnv.net/) via the provided `devenv.nix` file. Just clone the repo and enter the directory - everything should be set up automatically and the following commands will be available:
+The available dependency groups are:
 
-* `setup` - to install required python packages
-* `test` - to run the test suite
-* `lint` - to run `ruff` lint check
-* `develop` - to run Home Assistant with the integration (will be available on <http://localhost:8123>)
+* `dev` - tooling for local development (`pre-commit`, `ruff`, `colorlog`)
+* `test_api` - dependencies for running the API test suite
+* `test` - everything in `test_api` plus `pytest-homeassistant-custom-component` for the full component test suite
+
+There are three supported ways to set up a development environment. All of them ultimately use `uv` to install the dependencies.
+
+### Option 1: Dev Container
+
+This integration follows the [Home Assistant Development Workflow](https://developers.home-assistant.io/docs/development_environment) using VSCode + [Dev Container](https://containers.dev/).
+
+1. Install [Docker](https://www.docker.com/) and the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) VSCode extension.
+2. Open the repository in VSCode and, when prompted, choose **Reopen in Container** (or run the *Dev Containers: Reopen in Container* command).
+
+The container image already includes `uv` (added via the `uv` dev container feature) and runs `scripts/setup` on creation, which executes `uv sync --group dev --group test_api`. Once it finishes, the `.venv` is ready and selected as the interpreter. Home Assistant is forwarded on <http://localhost:8123>.
+
+### Option 2: Local setup with uv
+
+If you prefer to work directly on your machine, [install uv](https://docs.astral.sh/uv/getting-started/installation/) and then run:
+
+```bash
+# Install the project together with the test dependencies into .venv
+uv sync --group test_api
+
+# Run the test suite
+uv run pytest tests/tests_api --cov-report=term-missing --cov=custom_components.tech.tech tests/
+
+# Run the linter
+uv run ruff check . --fix
+```
+
+`uv sync` creates and manages a local `.venv`, so there is no need to create or activate a virtual environment manually. uv also installs the correct Python version automatically (the project requires Python 3.14+). Prefix commands with `uv run` to execute them inside that environment. The convenience script `scripts/setup` runs `uv sync --group dev --group test_api`.
+
+### Option 3: Nix with devenv
+
+If you are using [nix](https://nixos.org/) you can use [devenv](https://devenv.sh/) and [direnv](https://direnv.net/) via the provided `devenv.nix` file.
+
+1. Install [nix](https://nixos.org/download/), [devenv](https://devenv.sh/getting-started/) and [direnv](https://direnv.net/docs/installation.html).
+2. Clone the repo, enter the directory and run `direnv allow`.
+
+direnv enters the devenv shell automatically (configured in `.envrc`), which provisions Python and calls `uv sync` for you. The following commands are then available:
+
+* `setup` - install the required python packages (`uv sync --group test_api`)
+* `test` - run the test suite
+* `lint` - run the `ruff` lint check
+* `develop` - run Home Assistant with the integration (available on <http://localhost:8123>)
