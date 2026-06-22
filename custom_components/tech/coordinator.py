@@ -62,8 +62,10 @@ class TechCoordinator(DataUpdateCoordinator):
 
         try:
             async with asyncio.timeout(API_TIMEOUT):
+                # force=True: the coordinator owns the polling cadence and must
+                # bypass the freshness cache that coalesces the setup-time burst.
                 return await self.api.module_data(
-                    self.config_entry.data[CONTROLLER][UDID]
+                    self.config_entry.data[CONTROLLER][UDID], force=True
                 )
         except TechLoginError as err:
             raise ConfigEntryAuthFailed from err

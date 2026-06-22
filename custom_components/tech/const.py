@@ -94,6 +94,13 @@ PLATFORMS = [
 SCAN_INTERVAL: Final = timedelta(seconds=60)
 API_TIMEOUT: Final = 60
 
+# A fetched module payload is reused for this many seconds. The seven HA
+# platforms each call get_module_zones/tiles/menus during setup; without this
+# guard every call would trigger its own full (rate-limited) cloud refresh.
+# The coordinator passes force=True to refresh on its own SCAN_INTERVAL cadence
+# regardless of cache age, so live telemetry is never stale beyond one poll.
+MODULE_DATA_CACHE_TTL: Final = SCAN_INTERVAL.total_seconds()
+
 # ---------------------------------------------------------------------------
 # Tile types  (the ``type`` field on each tile in the /tiles API response)
 # ---------------------------------------------------------------------------

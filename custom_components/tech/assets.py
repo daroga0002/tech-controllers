@@ -62,17 +62,6 @@ def get_text(text_id: int) -> str:
     return f"txtId {text_id}"
 
 
-def get_id_from_text(text: str) -> int:
-    """Return the translation identifier for a given text value."""
-    if text:
-        _LOGGER.debug("Looking up translation id for text: %s", text)
-        if TRANSLATIONS is not None:
-            for key, value in TRANSLATIONS.get("data", {}).items():
-                if value == text:
-                    return int(key)
-    return 0
-
-
 def get_text_by_type(text_type: int) -> str:
     """Return the translated label associated with a tile type."""
     text_id = TXT_ID_BY_TYPE.get(text_type, f"type {text_type}")

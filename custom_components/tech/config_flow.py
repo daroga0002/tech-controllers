@@ -130,72 +130,41 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         include_name: bool = INCLUDE_HUB_IN_NAME in user_input
 
-        if self._controllers is not None and user_input is not None:
-            if (
-                CONTROLLERS not in user_input
-                or not user_input[CONTROLLERS]
-                or len(user_input[CONTROLLERS]) == 0
-            ):
-                return self.async_abort(reason="no_modules")
+        if self._controllers is None or not user_input.get(CONTROLLERS):
+            return self.async_abort(reason="no_modules")
 
-            controllers = user_input[CONTROLLERS]
+        # Index the discovered controllers by their (integer) id once, then
+        # resolve every selected id through it instead of rescanning the list.
+        controllers_by_id = {
+            obj[CONTROLLER].get(ATTR_ID): obj for obj in self._controllers
+        }
+        selected = [controllers_by_id[int(cid)] for cid in user_input[CONTROLLERS]]
 
-            # check if we have any of the selected controllers already configured
-            # and abort if so
-            for controller_id in controllers:
-                controller = next(
-                    obj
-                    for obj in self._controllers
-                    if obj[CONTROLLER].get(ATTR_ID) == int(controller_id)
-                )
-                await self.async_set_unique_id(controller[CONTROLLER][UDID])
-                self._abort_if_unique_id_configured()
+        # Abort if any selected controller is already configured.
+        for controller in selected:
+            await self.async_set_unique_id(controller[CONTROLLER][UDID])
+            self._abort_if_unique_id_configured()
 
-            # process first set of controllers and add config entries for them
-            if len(controllers) > 1:
-                for controller_id in controllers[1 : len(controllers)]:
-                    controller = next(
-                        obj
-                        for obj in self._controllers
-                        if obj[CONTROLLER].get(ATTR_ID) == int(controller_id)
-                    )
-                    await self.async_set_unique_id(controller[CONTROLLER][UDID])
-
-                    controller[INCLUDE_HUB_IN_NAME] = include_name
-                    _LOGGER.debug(
-                        "Adding config entry for: %s",
-                        assets.redact(controller, ["token"]),
-                    )
-
-                    await self.hass.config_entries.async_add(
-                        self._create_config_entry(controller=controller)
-                    )
-
-            # process last controller and async create entry finishing the step
-            controller_udid = next(
-                obj
-                for obj in self._controllers
-                if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-            )[CONTROLLER][UDID]
-
-            await self.async_set_unique_id(controller_udid)
-
-            controller = next(
-                obj
-                for obj in self._controllers
-                if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-            )
+        # Add config entries for every selected controller but the first.
+        for controller in selected[1:]:
+            await self.async_set_unique_id(controller[CONTROLLER][UDID])
             controller[INCLUDE_HUB_IN_NAME] = include_name
-
-            return self.async_create_entry(
-                title=next(
-                    obj
-                    for obj in self._controllers
-                    if obj[CONTROLLER].get(ATTR_ID) == int(controllers[0])
-                )[CONTROLLER][CONF_NAME],
-                data=controller,
+            _LOGGER.debug(
+                "Adding config entry for: %s",
+                assets.redact(controller, ["token"]),
             )
-        return self.async_abort(reason="no_modules")
+            await self.hass.config_entries.async_add(
+                self._create_config_entry(controller=controller)
+            )
+
+        # Finish the flow by creating the entry for the first controller.
+        first = selected[0]
+        await self.async_set_unique_id(first[CONTROLLER][UDID])
+        first[INCLUDE_HUB_IN_NAME] = include_name
+        return self.async_create_entry(
+            title=first[CONTROLLER][CONF_NAME],
+            data=first,
+        )
 
     async def async_step_select_controllers(
         self,
