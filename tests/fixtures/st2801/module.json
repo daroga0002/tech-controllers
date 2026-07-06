@@ -1,0 +1,230 @@
+{
+  "zones": {
+    "transaction_time": null,
+    "elements": [],
+    "globalSchedules": {
+      "time": null,
+      "duringChange": null,
+      "elements": []
+    },
+    "controllerParameters": {}
+  },
+  "tiles": [
+    {
+      "id": 509,
+      "parentId": 0,
+      "type": 50,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Controller software version",
+        "version": "1.2.2",
+        "txtId": 1634,
+        "iconId": 29,
+        "companyId": 6,
+        "controllerName": "ST-2801",
+        "mainControllerId": 0
+      }
+    },
+    {
+      "id": 10024,
+      "parentId": 0,
+      "type": 1,
+      "menuId": 11016,
+      "orderId": 1,
+      "visibility": true,
+      "params": {
+        "description": "Temperature sensor",
+        "workingStatus": true,
+        "txtId": 1072,
+        "value": 230,
+        "batteryLevel": null,
+        "signalStrength": null
+      }
+    },
+    {
+      "id": 10026,
+      "parentId": 0,
+      "type": 1,
+      "menuId": 0,
+      "orderId": 4,
+      "visibility": true,
+      "params": {
+        "description": "Temperature sensor",
+        "workingStatus": true,
+        "txtId": 1071,
+        "value": 370,
+        "batteryLevel": null,
+        "signalStrength": null
+      }
+    },
+    {
+      "id": 10027,
+      "parentId": 0,
+      "type": 1,
+      "menuId": 0,
+      "orderId": 2,
+      "visibility": true,
+      "params": {
+        "description": "Temperature sensor",
+        "workingStatus": true,
+        "txtId": 768,
+        "value": 110,
+        "batteryLevel": null,
+        "signalStrength": null
+      }
+    },
+    {
+      "id": 10128,
+      "parentId": 0,
+      "type": 40,
+      "menuId": 0,
+      "orderId": 10,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 598,
+        "headerId": 820,
+        "iconId": 95,
+        "options": []
+      }
+    },
+    {
+      "id": 10130,
+      "parentId": 0,
+      "type": 11,
+      "menuId": 0,
+      "orderId": 6,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": true,
+        "txtId": 575,
+        "iconId": 17
+      }
+    },
+    {
+      "id": 10131,
+      "parentId": 0,
+      "type": 1,
+      "menuId": 11200,
+      "orderId": 13,
+      "visibility": false,
+      "params": {
+        "description": "Temperature sensor",
+        "workingStatus": true,
+        "txtId": 3477,
+        "value": 230,
+        "batteryLevel": null,
+        "signalStrength": null
+      }
+    },
+    {
+      "id": 10132,
+      "parentId": 0,
+      "type": 1,
+      "menuId": 11205,
+      "orderId": 3,
+      "visibility": true,
+      "params": {
+        "description": "Temperature sensor",
+        "workingStatus": true,
+        "txtId": 1070,
+        "value": 230,
+        "batteryLevel": null,
+        "signalStrength": null
+      }
+    },
+    {
+      "id": 10133,
+      "parentId": 0,
+      "type": 41,
+      "menuId": 0,
+      "orderId": 12,
+      "visibility": true,
+      "params": {
+        "description": "Date",
+        "year": 2026,
+        "month": 5,
+        "day": 18,
+        "dayId": 1,
+        "hours": 18,
+        "minutes": 17
+      }
+    },
+    {
+      "id": 10134,
+      "parentId": 0,
+      "type": 2,
+      "menuId": 0,
+      "orderId": 8,
+      "visibility": true,
+      "params": {
+        "description": "Fire sensor",
+        "workingStatus": true,
+        "value": -1
+      }
+    },
+    {
+      "id": 10135,
+      "parentId": 0,
+      "type": 6,
+      "menuId": 0,
+      "orderId": 9,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 206,
+        "widget1": {
+          "txtId": 428,
+          "value": 0,
+          "unit": 8,
+          "type": 1,
+          "params": [0, 0, 0, 0, 0]
+        },
+        "widget2": {
+          "txtId": 609,
+          "value": 14,
+          "unit": 8,
+          "type": 2,
+          "params": [0, 0, 0, 0, 0]
+        }
+      }
+    },
+    {
+      "id": 10136,
+      "parentId": 0,
+      "type": 1,
+      "menuId": 0,
+      "orderId": 5,
+      "visibility": false,
+      "params": {
+        "description": "Temperature sensor",
+        "workingStatus": true,
+        "txtId": 1278,
+        "value": 300,
+        "batteryLevel": null,
+        "signalStrength": null
+      }
+    },
+    {
+      "id": 21202,
+      "parentId": 0,
+      "type": 40,
+      "menuId": 11202,
+      "orderId": 11,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 3478,
+        "headerId": 3476,
+        "iconId": 123,
+        "options": []
+      }
+    }
+  ],
+  "tilesOrder": "10024|1,10027|1,10132|1,10026|1,10136|0,10130|1,10134|1,10135|1,10128|1,21202|1,10133|1,10131|0,",
+  "tilesLastUpdate": "2026-05-17 18:17:58.957202+02"
+}

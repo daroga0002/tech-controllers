@@ -143,8 +143,9 @@ WIDGET_TEMPERATURE_CH = 9  # Central-heating temperature reading
 #  * 6   -- enum/mode badge (no numeric meaning -- :func:`_build_widget_tile`
 #           skips these to avoid creating useless "always 0" sensors)
 #  * 7   -- tenths of a degree (the most common boiler temperature unit)
+#  * 8   -- raw percentage (modulation, fan speed, pump duty cycle)
 #  * -1  -- contact widget marker (handled by binary_sensor, not scaled here)
-WIDGET_UNIT_DIVISORS = {0: 1, 4: 10, 5: 100, 6: 1, 7: 10}
+WIDGET_UNIT_DIVISORS = {0: 1, 4: 10, 5: 100, 6: 1, 7: 10, 8: 1}
 
 # ---------------------------------------------------------------------------
 # Icon mapping tables
