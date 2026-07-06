@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Naprava je že konfigurirana",
-            "no_modules": "Ni zaznanih ali izbranih modulov"
+            "no_modules": "Ni zaznanih ali izbranih modulov",
+            "controllers_configured": "Izbrani krmilniki so bili dodani"
         },
         "error": {
             "cannot_connect": "Ne morem se povezati s Tech API.",

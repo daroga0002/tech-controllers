@@ -145,9 +145,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(controller[CONTROLLER][UDID])
             self._abort_if_unique_id_configured()
 
-        # Add config entries for every selected controller but the first.
-        for controller in selected[1:]:
-            await self.async_set_unique_id(controller[CONTROLLER][UDID])
+        # Add a config entry for every selected controller. The flow itself
+        # does not create an entry, so it finishes with an informational abort.
+        for controller in selected:
             controller[INCLUDE_HUB_IN_NAME] = include_name
             _LOGGER.debug(
                 "Adding config entry for: %s",
@@ -157,14 +157,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self._create_config_entry(controller=controller)
             )
 
-        # Finish the flow by creating the entry for the first controller.
-        first = selected[0]
-        await self.async_set_unique_id(first[CONTROLLER][UDID])
-        first[INCLUDE_HUB_IN_NAME] = include_name
-        return self.async_create_entry(
-            title=first[CONTROLLER][CONF_NAME],
-            data=first,
-        )
+        return self.async_abort(reason="controllers_configured")
 
     async def async_step_select_controllers(
         self,
@@ -245,7 +238,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             minor_version=ConfigFlow.MINOR_VERSION,
             source=SOURCE_USER,
             options={},
-            unique_id=None,
+            unique_id=controller[CONTROLLER][UDID],
             subentries_data=[],
         )
 

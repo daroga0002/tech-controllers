@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Apparaat is al geconfigureerd",
-            "no_modules": "Geen modules gedetecteerd of geselecteerd"
+            "no_modules": "Geen modules gedetecteerd of geselecteerd",
+            "controllers_configured": "Geselecteerde controllers zijn toegevoegd"
         },
         "error": {
             "cannot_connect": "Kan geen verbinding maken met Tech API.",

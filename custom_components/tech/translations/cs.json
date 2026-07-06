@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Zařízení již nakonfigurováno",
-            "no_modules": "Nebyly detekovány žádné moduly nebo nebyly vybrány"
+            "no_modules": "Nebyly detekovány žádné moduly nebo nebyly vybrány",
+            "controllers_configured": "Vybrané ovladače byly přidány"
         },
         "error": {
             "cannot_connect": "Nelze se připojit k Tech API.",

@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Устройство уже настроено",
-            "no_modules": "Не обнаружено модулей или выбрано"
+            "no_modules": "Не обнаружено модулей или выбрано",
+            "controllers_configured": "Выбранные контроллеры добавлены"
         },
         "error": {
             "cannot_connect": "Не удалось подключиться к Tech API.",
