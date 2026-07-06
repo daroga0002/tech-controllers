@@ -50,9 +50,7 @@ async def async_setup_entry(
 
     menus = await coordinator.api.get_module_menus(controller_udid)
     zones = await coordinator.api.get_module_zones(controller_udid)
-    group_names = assets.build_menu_group_names(menus)
-    zone_assignments = assets.build_menu_zone_assignments(menus, zones)
-    depths = assets.compute_menu_depths(menus)
+    ctx = assets.build_menu_context(menus, zones, coordinator.translations)
 
     entities: list[MenuSelectEntity] = []
     for key, item in menus.items():
@@ -65,7 +63,7 @@ async def async_setup_entry(
             continue
         # Skip items deeper than the registration limit -- L-12 has 200+
         # CHOICE items, mostly per-zone schedule selectors.
-        if depths[key] > MENU_DEPTH_REGISTRATION_LIMIT:
+        if ctx.depths[key] > MENU_DEPTH_REGISTRATION_LIMIT:
             continue
         entities.append(
             MenuSelectEntity(
@@ -73,9 +71,9 @@ async def async_setup_entry(
                 key,
                 coordinator,
                 config_entry,
-                group_names,
-                depth=depths[key],
-                zone_id=zone_assignments.get(key),
+                ctx.group_names,
+                depth=ctx.depths[key],
+                zone_id=ctx.zone_assignments.get(key),
             )
         )
 
@@ -124,7 +122,9 @@ class MenuSelectEntity(CoordinatorEntity, SelectEntity):
 
         # ``_attr_has_entity_name = True`` lets HA prepend the device name; the
         # entity name itself is the menu label only.
-        self._name = assets.menu_entity_name(item, group_names, "")
+        self._name = assets.menu_entity_name(
+            item, group_names, coordinator.translations
+        )
 
         self._disabled = depth > MENU_DEPTH_DEFAULT_ENABLED_LIMIT
 
@@ -178,7 +178,9 @@ class MenuSelectEntity(CoordinatorEntity, SelectEntity):
                 txt_id = opt.get("txtId", 0)
             else:
                 continue
-            label = assets.get_text(txt_id) if txt_id else str(val)
+            label = (
+                self.coordinator.translations.get_text(txt_id) if txt_id else str(val)
+            )
             # Ensure unique labels
             if label in self._label_to_value:
                 label = f"{label} ({val})"

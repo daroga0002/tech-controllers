@@ -1,63 +1,64 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Zariadenie už bolo nakonfigurované",
-            "no_modules": "Neboli nájdené alebo vybrané žiadne moduly"
-        },
-        "error": {
-            "cannot_connect": "Nie je možné pripojiť sa k Tech API.",
-            "invalid_auth": "Neplatné prihlasovacie údaje!",
-            "unknown": "Neznáma chyba. Skúste to prosím znova alebo nahláste chybu na ..."
-        },
-        "step": {
-            "user": {
-                "title": "Prihlásenie do eModul",
-                "description": "Prosím, zadajte svoje prihlasovacie údaje do služby emodul.eu alebo emodul.pl.",
-                "data": {
-                    "password": "Heslo",
-                    "username": "Používateľské meno"
-                }
-            },
-            "select_controllers": {
-                "title": "Výber modulov",
-                "description": "Prosím, vyberte moduly, ktoré chcete integrovať.",
-                "data": {
-                    "controllers": "Moduly na import",
-                    "include_hub_in_name": "Zahrňte názov hubu (modulu) do názvov entít"
-                }
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "Zariadenie už bolo nakonfigurované",
+      "no_modules": "Neboli nájdené alebo vybrané žiadne moduly",
+      "controllers_configured": "Vybrané ovládače boli pridané"
     },
-    "entity": {
-        "sensor": {
-          "temperature_entity": {
-            "name": "{entity_name} Teplota"
-          },
-          "battery_entity": {
-            "name": "{entity_name} Batéria"
-          },
-          "humidity_entity": {
-            "name": "Vlhkosť"
-          },
-          "actuator_entity": {
-            "name": "Aktuátor {actuator_number}"
-          },
-          "underfloor_entity": {
-            "name": "Podlahové kúrenie"
-          },
-          "window_sensor_entity": {
-            "name": "Okno {window_number}"
-          },
-          "ext_temperature_entity": {
-            "name": "Vonkajšia teplota"
-          },
-          "signal_strength_entity": {
-            "name": "{entity_name} Intenzita signálu"
-          },
-          "zone_state_entity": {
-            "name": "{entity_name} Stav alarmu"
-          }
+    "error": {
+      "cannot_connect": "Nie je možné pripojiť sa k Tech API.",
+      "invalid_auth": "Neplatné prihlasovacie údaje!",
+      "unknown": "Neznáma chyba. Skúste to prosím znova alebo nahláste chybu na ..."
+    },
+    "step": {
+      "user": {
+        "title": "Prihlásenie do eModul",
+        "description": "Prosím, zadajte svoje prihlasovacie údaje do služby emodul.eu alebo emodul.pl.",
+        "data": {
+          "password": "Heslo",
+          "username": "Používateľské meno"
         }
       },
-    "title": "Tech Controllers"
+      "select_controllers": {
+        "title": "Výber modulov",
+        "description": "Prosím, vyberte moduly, ktoré chcete integrovať.",
+        "data": {
+          "controllers": "Moduly na import",
+          "include_hub_in_name": "Zahrňte názov hubu (modulu) do názvov entít"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_entity": {
+        "name": "{entity_name} Teplota"
+      },
+      "battery_entity": {
+        "name": "{entity_name} Batéria"
+      },
+      "humidity_entity": {
+        "name": "Vlhkosť"
+      },
+      "actuator_entity": {
+        "name": "Aktuátor {actuator_number}"
+      },
+      "underfloor_entity": {
+        "name": "Podlahové kúrenie"
+      },
+      "window_sensor_entity": {
+        "name": "Okno {window_number}"
+      },
+      "ext_temperature_entity": {
+        "name": "Vonkajšia teplota"
+      },
+      "signal_strength_entity": {
+        "name": "{entity_name} Intenzita signálu"
+      },
+      "zone_state_entity": {
+        "name": "{entity_name} Stav alarmu"
+      }
+    }
+  },
+  "title": "Tech Controllers"
 }

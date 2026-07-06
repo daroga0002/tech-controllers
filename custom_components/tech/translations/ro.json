@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Dispozitiv deja configurat",
-            "no_modules": "Nu au fost detectate sau selectate module"
+            "no_modules": "Nu au fost detectate sau selectate module",
+            "controllers_configured": "Controlerele selectate au fost adăugate"
         },
         "error": {
             "cannot_connect": "Nu se poate conecta la API-ul Tech.",

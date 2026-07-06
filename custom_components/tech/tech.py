@@ -8,12 +8,19 @@ import logging
 import time
 from typing import TYPE_CHECKING, Any
 
+from aiohttp import ClientTimeout
+
 if TYPE_CHECKING:  # pragma: no cover - imported for type checking only
     from aiohttp import ClientSession
 else:  # pragma: no cover
     ClientSession = Any
 
-from .const import MENU_TYPES, TECH_SUPPORTED_LANGUAGES
+from .const import (
+    API_TIMEOUT,
+    MENU_TYPES,
+    MODULE_DATA_CACHE_TTL,
+    TECH_SUPPORTED_LANGUAGES,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -43,6 +50,9 @@ class Tech:
         self.headers = {"Accept": "application/json", "Accept-Encoding": "gzip"}
         self.base_url = base_url
         self.session = session
+        # Bound every request so a stalled cloud connection cannot hang the
+        # config flow or entry setup, which run outside the coordinator timeout.
+        self.timeout = ClientTimeout(total=API_TIMEOUT)
         if user_id and token:
             self.user_id = user_id
             self.token = token
@@ -50,7 +60,8 @@ class Tech:
             self.authenticated = True
         else:
             self.authenticated = False
-        self.last_update = None
+        # Serialises concurrent module_data refreshes (the platforms set up in
+        # parallel) so they coalesce onto a single fetch instead of stampeding.
         self.update_lock = asyncio.Lock()
         self.modules = {}
 
@@ -69,7 +80,9 @@ class Tech:
         """
         url = self.base_url + request_path
         _LOGGER.debug("Sending GET request: %s", url)
-        async with self.session.get(url, headers=self.headers) as response:
+        async with self.session.get(
+            url, headers=self.headers, timeout=self.timeout
+        ) as response:
             if response.status != 200:
                 _LOGGER.warning("Invalid response from Tech API: %s", response.status)
                 raise TechError(response.status, await response.text())
@@ -93,7 +106,7 @@ class Tech:
         url = self.base_url + request_path
         _LOGGER.debug("Sending POST request: %s", url)
         async with self.session.post(
-            url, data=post_data, headers=self.headers
+            url, data=post_data, headers=self.headers, timeout=self.timeout
         ) as response:
             if response.status != 200:
                 _LOGGER.warning("Invalid response from Tech API: %s", response.status)
@@ -231,61 +244,88 @@ class Tech:
         module = await self.module_data(module_udid)
         return module["tiles"]
 
-    async def module_data(self, module_udid: str) -> dict[str, Any]:
-        """Refresh module zones and tiles and return the cached payload.
+    async def module_data(
+        self, module_udid: str, force: bool = False
+    ) -> dict[str, Any]:
+        """Refresh module zones, tiles and menus and return the cached payload.
+
+        Concurrent callers are serialised through :attr:`update_lock`, and a
+        payload fetched within :data:`const.MODULE_DATA_CACHE_TTL` seconds is
+        reused as-is. This collapses the burst of per-platform setup calls onto
+        a single cloud refresh instead of one full (rate-limited) fetch each.
+        The coordinator passes ``force=True`` to refresh on its own polling
+        cadence regardless of cache age.
 
         Args:
             module_udid: Tech module identifier.
+            force: When ``True``, bypass the freshness check and always refetch.
 
         Returns:
-            Dictionary containing ``zones`` and ``tiles`` entries.
+            Dictionary containing ``zones``, ``tiles`` and ``menus`` entries.
 
         """
-        now = time.time()
-
-        cache = self.modules.setdefault(
-            module_udid, {"last_update": None, "zones": {}, "tiles": {}, "menus": {}}
-        )
-
-        _LOGGER.debug("Updating module zones & tiles ... %s", module_udid)
-        result = await self.get_module_data(module_udid)
-
-        raw_zones = result.get("zones", {}).get("elements", [])
-        visible_zones = [
-            zone
-            for zone in raw_zones
-            if zone
-            and zone.get("zone")
-            and zone["zone"].get("visibility")
-            and zone["zone"].get("zoneState") != "zoneUnregistered"
-        ]
-
-        if visible_zones:
-            _LOGGER.debug(
-                "Updating %s zones for controller: %s", len(visible_zones), module_udid
-            )
-            cache["zones"].update({zone["zone"]["id"]: zone for zone in visible_zones})
-
-        raw_tiles = result.get("tiles", [])
-        visible_tiles = [tile for tile in raw_tiles if tile and tile.get("visibility")]
-
-        if visible_tiles:
-            _LOGGER.debug(
-                "Updating %s tiles for controller: %s", len(visible_tiles), module_udid
-            )
-            cache["tiles"].update({tile["id"]: tile for tile in visible_tiles})
-
-        menu_items = await self._fetch_menu_data(module_udid)
-        if menu_items:
-            _LOGGER.debug(
-                "Updating %s menu items for controller: %s",
-                len(menu_items),
+        async with self.update_lock:
+            cache = self.modules.setdefault(
                 module_udid,
+                {"last_update": None, "zones": {}, "tiles": {}, "menus": {}},
             )
-            cache.setdefault("menus", {}).update(menu_items)
 
-        cache["last_update"] = now
-        return cache
+            last_update = cache.get("last_update")
+            if (
+                not force
+                and last_update is not None
+                and time.monotonic() - last_update < MODULE_DATA_CACHE_TTL
+            ):
+                _LOGGER.debug("Reusing cached module data for %s", module_udid)
+                return cache
+
+            _LOGGER.debug("Updating module zones & tiles ... %s", module_udid)
+            result = await self.get_module_data(module_udid)
+
+            raw_zones = result.get("zones", {}).get("elements", [])
+            visible_zones = [
+                zone
+                for zone in raw_zones
+                if zone
+                and zone.get("zone")
+                and zone["zone"].get("visibility")
+                and zone["zone"].get("zoneState") != "zoneUnregistered"
+            ]
+
+            if visible_zones:
+                _LOGGER.debug(
+                    "Updating %s zones for controller: %s",
+                    len(visible_zones),
+                    module_udid,
+                )
+                cache["zones"].update(
+                    {zone["zone"]["id"]: zone for zone in visible_zones}
+                )
+
+            raw_tiles = result.get("tiles", [])
+            visible_tiles = [
+                tile for tile in raw_tiles if tile and tile.get("visibility")
+            ]
+
+            if visible_tiles:
+                _LOGGER.debug(
+                    "Updating %s tiles for controller: %s",
+                    len(visible_tiles),
+                    module_udid,
+                )
+                cache["tiles"].update({tile["id"]: tile for tile in visible_tiles})
+
+            menu_items = await self._fetch_menu_data(module_udid)
+            if menu_items:
+                _LOGGER.debug(
+                    "Updating %s menu items for controller: %s",
+                    len(menu_items),
+                    module_udid,
+                )
+                cache.setdefault("menus", {}).update(menu_items)
+
+            cache["last_update"] = time.monotonic()
+            return cache
 
     async def _fetch_menu_data(self, module_udid: str) -> dict[str, dict[str, Any]]:
         """Fetch menu items from all configured menu types.

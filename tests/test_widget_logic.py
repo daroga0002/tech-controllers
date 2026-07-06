@@ -294,7 +294,8 @@ class TestSt491Fixture:
     def test_additional_pump_tile_uses_status_txtid(self):
         """Visible additional-pump tile reports a status txtId (922)."""
         pumps = [
-            t for t in self.module["tiles"]
+            t
+            for t in self.module["tiles"]
             if t["type"] == C.TYPE_ADDITIONAL_PUMP and t.get("visibility")
         ]
         assert len(pumps) >= 1

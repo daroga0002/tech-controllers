@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Seade on juba konfigureeritud",
-            "no_modules": "Ühtegi moodulit ei tuvastatud ega valitud"
+            "no_modules": "Ühtegi moodulit ei tuvastatud ega valitud",
+            "controllers_configured": "Valitud kontrollerid on lisatud"
         },
         "error": {
             "cannot_connect": "Ei saa ühendust Tech API-ga.",

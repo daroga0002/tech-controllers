@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Dispositivo já configurado",
-            "no_modules": "Nenhum módulo detetado ou selecionado"
+            "no_modules": "Nenhum módulo detetado ou selecionado",
+            "controllers_configured": "Os controladores selecionados foram adicionados"
         },
         "error": {
             "cannot_connect": "Não é possível ligar à API da Tech.",
@@ -41,6 +42,9 @@
             },
             "actuator_entity": {
                 "name": "Atuador {actuator_number}"
+            },
+            "underfloor_entity": {
+                "name": "Piso radiante"
             },
             "window_sensor_entity": {
                 "name": "Janela {window_number}"
