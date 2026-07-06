@@ -173,7 +173,7 @@ ICON_BY_TYPE = {
 # When a tile has no ``txtId`` (or the per-tile txtId carries a status string
 # rather than a label -- see :data:`TXT_ID_IS_STATUS_FOR_TYPES`), fall back
 # to a hard-coded txtId per tile type. The numbers are looked up in the Tech
-# i18n translation pack at startup (see :func:`assets.load_subtitles`).
+# i18n translation pack at startup (see :meth:`assets.Translations.load`).
 TXT_ID_BY_TYPE = {
     TYPE_FIRE_SENSOR: 205,
     TYPE_ADDITIONAL_PUMP: 576,  # "Pompa dodatkowa" -- per-tile txtId is "Disabled"

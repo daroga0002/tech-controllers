@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from dataclasses import dataclass
 import logging
 from typing import Any
 
@@ -16,56 +16,49 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-_REDACTED_VALUE = "***HIDDEN***"
 
-TranslationsType = dict[str, Any]
+class Translations:
+    """Translated subtitle strings fetched from the Tech API.
 
-
-TRANSLATIONS: TranslationsType | None = None
-
-
-def redact(entry_data: dict[str, Any], keys: Iterable[str]) -> str:
-    """Return a string representation of ``entry_data`` with selected keys masked.
-
-    Args:
-        entry_data: Source mapping that may contain sensitive values.
-        keys: Sequence of keys whose values should be replaced.
-
-    Returns:
-        Stringified version of ``entry_data`` with sensitive values replaced by
-        ``***HIDDEN***``.
-
+    One instance lives on each :class:`TechCoordinator`; entities resolve
+    their labels through it instead of a module-level cache so that the
+    lifetime of the translation data is tied to the config entry.
     """
-    keys_set = set(keys)
-    sanitized_data = {
-        k: _REDACTED_VALUE if k in keys_set else v for k, v in entry_data.items()
-    }
-    return str(sanitized_data)
 
+    def __init__(self, data: dict[str, Any] | None = None) -> None:
+        """Wrap a raw ``get_translations`` API response (or nothing).
 
-async def load_subtitles(language: str, api) -> None:
-    """Load translated subtitles for the active integration language.
+        Args:
+            data: Raw API payload; its ``data`` key maps stringified text
+                ids to translated strings. ``None`` yields an empty catalog
+                so lookups degrade to the ``txtId ...`` fallback.
 
-    Args:
-        language: Home Assistant language code to retrieve from the API.
-        api: Authenticated Tech API client exposing ``get_translations``.
+        """
+        self._texts: dict[str, str] = (data or {}).get("data", {})
 
-    """
-    global TRANSLATIONS  # noqa: PLW0603 # pylint: disable=global-statement
-    TRANSLATIONS = await api.get_translations(language)
+    @classmethod
+    async def load(cls, language: str, api) -> Translations:
+        """Fetch the subtitle catalog for ``language`` from the API.
 
+        Args:
+            language: Home Assistant language code to retrieve from the API.
+            api: Authenticated Tech API client exposing ``get_translations``.
 
-def get_text(text_id: int) -> str:
-    """Return the translated string for a subtitle identifier."""
-    if TRANSLATIONS is not None and text_id != 0:
-        return TRANSLATIONS.get("data", {}).get(str(text_id), f"txtId {text_id}")
-    return f"txtId {text_id}"
+        """
+        return cls(await api.get_translations(language))
 
+    def get_text(self, text_id: int) -> str:
+        """Return the translated string for a subtitle identifier."""
+        if text_id != 0:
+            return self._texts.get(str(text_id), f"txtId {text_id}")
+        return f"txtId {text_id}"
 
-def get_text_by_type(text_type: int) -> str:
-    """Return the translated label associated with a tile type."""
-    text_id = TXT_ID_BY_TYPE.get(text_type, f"type {text_type}")
-    return get_text(text_id)
+    def get_text_by_type(self, text_type: int) -> str:
+        """Return the translated label associated with a tile type."""
+        text_id = TXT_ID_BY_TYPE.get(text_type)
+        if text_id is None:
+            return f"type {text_type}"
+        return self.get_text(text_id)
 
 
 def get_icon(icon_id: int) -> str:
@@ -76,6 +69,39 @@ def get_icon(icon_id: int) -> str:
 def get_icon_by_type(icon_type: int) -> str:
     """Return the default icon assigned to the provided tile type."""
     return ICON_BY_TYPE.get(icon_type, DEFAULT_ICON)
+
+
+@dataclass(frozen=True)
+class MenuContext:
+    """Precomputed lookups shared by the menu-based platform setups."""
+
+    group_names: dict[tuple[str, int], str]
+    zone_assignments: dict[str, int]
+    depths: dict[str, int]
+
+
+def build_menu_context(
+    menus: dict[str, dict[str, Any]],
+    zones: dict[int, dict[str, Any]],
+    translations: Translations,
+) -> MenuContext:
+    """Build every menu lookup needed by a platform ``async_setup_entry``.
+
+    Args:
+        menus: Flat mapping of menu key to menu item payload.
+        zones: Mapping of zone ID to zone payload (as cached by the API client).
+        translations: Subtitle catalog used to resolve group labels.
+
+    Returns:
+        A :class:`MenuContext` bundling group names, zone assignments and
+        item depths for ``menus``.
+
+    """
+    return MenuContext(
+        group_names=build_menu_group_names(menus, translations),
+        zone_assignments=build_menu_zone_assignments(menus, zones),
+        depths=compute_menu_depths(menus),
+    )
 
 
 def compute_menu_depths(
@@ -122,12 +148,14 @@ def compute_menu_depths(
 
 def build_menu_group_names(
     menus: dict[str, dict[str, Any]],
+    translations: Translations,
 ) -> dict[tuple[str, int], str]:
     """Build a mapping of ``(menu_type, group_id)`` to translated group name.
 
     Args:
         menus: Flat mapping of menu key to menu item payload (as returned by
             :meth:`Tech.get_module_menus`).
+        translations: Subtitle catalog used to resolve group labels.
 
     Returns:
         Dictionary keyed by ``(menu_type, group_id)`` with the resolved group
@@ -139,7 +167,7 @@ def build_menu_group_names(
         if item.get("type") != MENU_ITEM_TYPE_GROUP:
             continue
         txt_id = item.get("txtId", 0)
-        name = get_text(txt_id) if txt_id else ""
+        name = translations.get_text(txt_id) if txt_id else ""
         groups[(item["menuType"], item["id"])] = name
     return groups
 
@@ -195,9 +223,11 @@ def build_menu_zone_assignments(
         return {}
 
     mt = zones_group["menuType"]
-    zone_subgroups = children_by_parent.get((mt, zones_group["id"]), [])
-    # Sort subgroups by id for stable positional matching
-    zone_subgroups.sort(key=lambda g: g["id"])
+    # Sort subgroups by id for stable positional matching; ``sorted`` keeps
+    # the shared list inside ``children_by_parent`` untouched.
+    zone_subgroups = sorted(
+        children_by_parent.get((mt, zones_group["id"]), []), key=lambda g: g["id"]
+    )
 
     # Sort zones by index for positional matching
     sorted_zone_ids = [
@@ -244,6 +274,7 @@ def build_menu_zone_assignments(
 def menu_entity_name(
     item: dict[str, Any],
     group_names: dict[tuple[str, int], str],
+    translations: Translations,
     prefix: str = "",
 ) -> str:
     """Return a human-readable entity name for a menu item.
@@ -254,6 +285,7 @@ def menu_entity_name(
     Args:
         item: Menu item payload from the API.
         group_names: Lookup returned by :func:`build_menu_group_names`.
+        translations: Subtitle catalog used to resolve the item label.
         prefix: Optional hub name prefix.
 
     Returns:
@@ -261,7 +293,7 @@ def menu_entity_name(
 
     """
     txt_id = item.get("txtId", 0)
-    label = get_text(txt_id) if txt_id else f"Menu {item['id']}"
+    label = translations.get_text(txt_id) if txt_id else f"Menu {item['id']}"
     parent_id = item.get("parentId", 0)
     if parent_id != 0:
         parent_label = group_names.get((item["menuType"], parent_id), "")

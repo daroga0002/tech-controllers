@@ -199,7 +199,7 @@ class TileWidgetContactSensor(TileBinarySensor):
         # Contact widgets carry their label inside the widget payload, not the
         # tile params, so override the name TileEntity computed from tile-level
         # txtId. ``_attr_has_entity_name = True`` lets HA prepend the device.
-        self._name = assets.get_text(widget["txtId"])
+        self._name = coordinator.translations.get_text(widget["txtId"])
         icon_id = device[CONF_PARAMS].get("iconId")
         if icon_id:
             self._attr_icon = assets.get_icon(icon_id)

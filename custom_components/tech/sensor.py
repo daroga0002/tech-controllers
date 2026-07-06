@@ -1121,7 +1121,7 @@ class TileTextSensor(TileSensor, SensorEntity):
     def __init__(self, device, coordinator, config_entry) -> None:
         """Initialize the sensor."""
         TileSensor.__init__(self, device, coordinator, config_entry)
-        self._name = assets.get_text(device[CONF_PARAMS]["headerId"])
+        self._name = coordinator.translations.get_text(device[CONF_PARAMS]["headerId"])
 
         self._attr_icon = assets.get_icon(device[CONF_PARAMS]["iconId"])
 
@@ -1137,7 +1137,7 @@ class TileTextSensor(TileSensor, SensorEntity):
 
     def get_state(self, device) -> Any:
         """Get the state of the device."""
-        return assets.get_text(device[CONF_PARAMS]["statusId"])
+        return self.coordinator.translations.get_text(device[CONF_PARAMS]["statusId"])
 
 
 class _TileWidgetSensorBase(TileSensor, SensorEntity):
@@ -1199,7 +1199,7 @@ class _TileWidgetSensorBase(TileSensor, SensorEntity):
         suffix = ""
         if widget.get(CONF_TYPE) == WIDGET_DHW_PUMP:
             suffix = self._NAME_SUFFIX_FOR_DHW.get(self._widget_key, "")
-        return f"{assets.get_text(txt_id)}{suffix}"
+        return f"{self.coordinator.translations.get_text(txt_id)}{suffix}"
 
     @property
     def unique_id(self) -> str:
@@ -1286,7 +1286,7 @@ class TileValveSensor(TileSensor, SensorEntity):
         self.state_class = SensorStateClass.MEASUREMENT
         self._valve_number = device[CONF_PARAMS]["valveNumber"]
         self._attr_icon = assets.get_icon_by_type(device[CONF_TYPE])
-        self._name = assets.get_text_by_type(device[CONF_TYPE])
+        self._name = coordinator.translations.get_text_by_type(device[CONF_TYPE])
 
         self.attrs: dict[str, Any] = {}
 
@@ -1344,8 +1344,8 @@ class TileValveTemperatureSensor(TileSensor, SensorEntity):
         self.native_unit_of_measurement = UnitOfTemperature.CELSIUS
         self.state_class = SensorStateClass.MEASUREMENT
         self._valve_number = device[CONF_PARAMS]["valveNumber"]
-        sensor_name = assets.get_text(valve_sensor["txt_id"])
-        valve_label = assets.get_text_by_type(device[CONF_TYPE])
+        sensor_name = coordinator.translations.get_text(valve_sensor["txt_id"])
+        valve_label = coordinator.translations.get_text_by_type(device[CONF_TYPE])
         self._name = f"{valve_label} {device[CONF_PARAMS]['valveNumber']} {sensor_name}"
 
     @property
@@ -1379,7 +1379,7 @@ class TileMixingValveSensor(TileSensor, SensorEntity):
         self.state_class = SensorStateClass.MEASUREMENT
         self._valve_number = device[CONF_PARAMS]["valveNumber"]
         self._attr_icon = assets.get_icon_by_type(device[CONF_TYPE])
-        self._name = assets.get_text_by_type(device[CONF_TYPE])
+        self._name = coordinator.translations.get_text_by_type(device[CONF_TYPE])
 
     @property
     def unique_id(self) -> str:
@@ -1421,14 +1421,15 @@ class TileGenericOpenThermSensor(TileSensor, SensorEntity):
         self.manufacturer = MANUFACTURER
 
         self.device_name = (
-            f"{self._config_entry.title} {assets.get_text_by_type(device[CONF_TYPE])}"
+            f"{self._config_entry.title} "
+            f"{coordinator.translations.get_text_by_type(device[CONF_TYPE])}"
         )
         self.model = (
             config_entry.data[CONTROLLER][CONF_NAME]
             + ": "
             + config_entry.data[CONTROLLER][VER]
         )
-        self._name = assets.get_text(self._txt_id)
+        self._name = coordinator.translations.get_text(self._txt_id)
 
         self.attrs = {}
 

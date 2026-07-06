@@ -11,6 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
+from .assets import Translations
 from .const import API_TIMEOUT, CONTROLLER, DOMAIN, SCAN_INTERVAL, UDID
 from .tech import Tech, TechError, TechLoginError
 
@@ -43,6 +44,9 @@ class TechCoordinator(DataUpdateCoordinator):
             update_interval=SCAN_INTERVAL,
         )
         self.api = Tech(session, user_id, token)
+        # Replaced with the fetched catalog in ``async_setup_entry`` before
+        # any platform is set up; the empty default keeps lookups safe.
+        self.translations = Translations()
 
     async def _async_update_data(self) -> dict:
         """Fetch the latest module data for the configured controller.
