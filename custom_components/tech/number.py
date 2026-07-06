@@ -129,7 +129,9 @@ class MenuNumberEntity(CoordinatorEntity, NumberEntity):
 
         # ``_attr_has_entity_name = True`` lets HA prepend the device name; the
         # entity name itself is the menu label only.
-        self._name = assets.menu_entity_name(item, group_names, coordinator.translations)
+        self._name = assets.menu_entity_name(
+            item, group_names, coordinator.translations
+        )
 
         self._disabled = depth > MENU_DEPTH_DEFAULT_ENABLED_LIMIT
 

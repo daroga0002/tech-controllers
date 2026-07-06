@@ -119,7 +119,9 @@ class MenuSwitchEntity(CoordinatorEntity, SwitchEntity):
 
         # ``_attr_has_entity_name = True`` lets HA prepend the device name from
         # ``device_info`` automatically -- the entity name is the menu label only.
-        self._name = assets.menu_entity_name(item, group_names, coordinator.translations)
+        self._name = assets.menu_entity_name(
+            item, group_names, coordinator.translations
+        )
 
         self._disabled = depth > MENU_DEPTH_DEFAULT_ENABLED_LIMIT
 

@@ -395,9 +395,7 @@ def _build_widget_tile(
             # type is still rendered correctly so long as ``unit`` is one of
             # the documented values in :data:`const.WIDGET_UNIT_DIVISORS`.
             entities.append(
-                TileWidgetTemperatureSensor(
-                    tile, coordinator, config_entry, widget_key
-                )
+                TileWidgetTemperatureSensor(tile, coordinator, config_entry, widget_key)
             )
     return entities
 

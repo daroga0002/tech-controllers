@@ -53,7 +53,9 @@ WORKING_STATUS = "workingStatus"  # bool: relay/pump on/off in tile payload
 ACTUATORS = "actuators"  # zone payload: list of valve actuator descriptors
 BATTERY_LEVEL = "batteryLevel"  # wireless temp sensor %, may be None
 ACTUATORS_OPEN = "actuatorsOpen"  # zone payload: count of opened actuators
-INCLUDE_HUB_IN_NAME = "include_hub_in_name"  # config flag (now effectively a no-op for tile entities)
+INCLUDE_HUB_IN_NAME = (
+    "include_hub_in_name"  # config flag (now effectively a no-op for tile entities)
+)
 UNDERFLOOR = "underfloor"  # zone payload: optional underfloor sub-config
 WINDOW_SENSORS = "windowsSensors"  # zone payload: list of window-sensor descriptors
 WINDOW_STATE = "windowState"  # individual window sensor open/closed key
