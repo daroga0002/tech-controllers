@@ -1,0 +1,3484 @@
+{
+  "zones": {
+    "transaction_time": null,
+    "elements": [],
+    "globalSchedules": {
+      "time": null,
+      "duringChange": null,
+      "elements": []
+    },
+    "controllerParameters": {}
+  },
+  "tiles": [
+    {
+      "id": 1600,
+      "parentId": 0,
+      "type": 50,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Controller software version",
+        "version": "0.7.4",
+        "txtId": 1634,
+        "iconId": 29,
+        "companyId": 3,
+        "controllerName": "ST-521",
+        "mainControllerId": 1110262573
+      }
+    },
+    {
+      "id": 1713,
+      "parentId": 11002,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 3121,
+          "value": 491,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1716,
+      "parentId": 11001,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 1856,
+          "value": 390,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1717,
+      "parentId": 11001,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 1855,
+          "value": 378,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1724,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 632,
+          "value": 1088,
+          "unit": 39,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1725,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 8299,
+          "value": 238,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1728,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 102,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 866,
+          "value": 25,
+          "unit": 8,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1729,
+      "parentId": 11000,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": true,
+        "txtId": 1383,
+        "iconId": 209
+      }
+    },
+    {
+      "id": 1733,
+      "parentId": 11002,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 1691,
+        "iconId": 153
+      }
+    },
+    {
+      "id": 1734,
+      "parentId": 11001,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 6613,
+        "iconId": 153
+      }
+    },
+    {
+      "id": 1736,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 3009,
+        "iconId": 205
+      }
+    },
+    {
+      "id": 1737,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 4329,
+        "iconId": 238
+      }
+    },
+    {
+      "id": 1739,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 6612,
+        "iconId": 153
+      }
+    },
+    {
+      "id": 1740,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 3699,
+        "iconId": 45,
+        "options": []
+      }
+    },
+    {
+      "id": 1746,
+      "parentId": 11017,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 64,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6613,
+          "value": 0,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1747,
+      "parentId": 11017,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 64,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 1691,
+          "value": 0,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1748,
+      "parentId": 11017,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 64,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6612,
+          "value": 0,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1749,
+      "parentId": 11017,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 64,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 3009,
+          "value": 0,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1765,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 100,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6057,
+          "value": 0,
+          "unit": 28,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1791,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": true,
+        "txtId": 5752,
+        "iconId": 197
+      }
+    },
+    {
+      "id": 1792,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 12040,
+        "iconId": 238
+      }
+    },
+    {
+      "id": 1793,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 12041,
+        "iconId": 238
+      }
+    },
+    {
+      "id": 1794,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 12042,
+        "iconId": 238
+      }
+    },
+    {
+      "id": 1795,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 12043,
+        "iconId": 238
+      }
+    },
+    {
+      "id": 1796,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 12044,
+        "iconId": 238
+      }
+    },
+    {
+      "id": 1857,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 99,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6055,
+          "value": 40,
+          "unit": 8,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1878,
+      "parentId": 11000,
+      "type": 51,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Peripheral system software version",
+        "version": "0.70.33",
+        "txtId": 12280,
+        "iconId": 29
+      }
+    },
+    {
+      "id": 1879,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 3698,
+          "value": 306,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1880,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 795,
+          "value": 76,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1881,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6225,
+          "value": 90,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1882,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 5468,
+          "value": 402,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1883,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 747,
+          "value": 380,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1884,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 1385,
+          "value": 579,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1885,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6904,
+          "value": 314,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1889,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 195,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 3840,
+          "value": 42,
+          "unit": 23,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1890,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 195,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 4013,
+          "value": 129,
+          "unit": 23,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1891,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6227,
+          "value": 30,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1892,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 4014,
+          "value": 408,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1893,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6905,
+          "value": 58,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1894,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6906,
+          "value": 58,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1895,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 7198,
+          "value": 60,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1896,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 100,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 3842,
+          "value": 111,
+          "unit": 33,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1897,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 102,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6224,
+          "value": 1744,
+          "unit": 27,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1898,
+      "parentId": 11000,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 1816,
+        "headerId": 3956,
+        "iconId": 209,
+        "options": []
+      }
+    },
+    {
+      "id": 1899,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 4208,
+          "value": 29,
+          "unit": 26,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1900,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6893,
+          "value": 30,
+          "unit": 26,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1901,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6894,
+          "value": 23,
+          "unit": 26,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1902,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 205,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6895,
+          "value": 35,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1903,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 205,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6896,
+          "value": 27,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1904,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 205,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6897,
+          "value": 27,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1905,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 205,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6898,
+          "value": 0,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1906,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6899,
+          "value": 0,
+          "unit": 29,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1907,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 420,
+          "value": 103,
+          "unit": 26,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1908,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 421,
+          "value": 21,
+          "unit": 26,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1909,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6900,
+          "value": 8943,
+          "unit": 11,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1910,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6901,
+          "value": 3213,
+          "unit": 11,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1911,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6902,
+          "value": 0,
+          "unit": 11,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1912,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6903,
+          "value": 0,
+          "unit": 11,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1917,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 205,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6125,
+          "value": 0,
+          "unit": 28,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1918,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 100,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6058,
+          "value": 0,
+          "unit": 28,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1919,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 205,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 3595,
+          "value": 0,
+          "unit": 28,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 1920,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 205,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 4654,
+          "value": 0,
+          "unit": 28,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2057,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 295,
+        "iconId": 47,
+        "options": []
+      }
+    },
+    {
+      "id": 2058,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2792,
+        "headerId": 296,
+        "iconId": 47,
+        "options": []
+      }
+    },
+    {
+      "id": 2059,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 6358,
+        "iconId": 47,
+        "options": []
+      }
+    },
+    {
+      "id": 2060,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 13353,
+        "iconId": 74,
+        "options": []
+      }
+    },
+    {
+      "id": 2061,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 1314,
+        "iconId": 74,
+        "options": []
+      }
+    },
+    {
+      "id": 2062,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 13352,
+        "iconId": 74,
+        "options": []
+      }
+    },
+    {
+      "id": 2063,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 6311,
+        "iconId": 87,
+        "options": []
+      }
+    },
+    {
+      "id": 2064,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 6345,
+        "iconId": 87,
+        "options": []
+      }
+    },
+    {
+      "id": 2065,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 6346,
+        "iconId": 87,
+        "options": []
+      }
+    },
+    {
+      "id": 2067,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 3665,
+        "iconId": 17,
+        "options": []
+      }
+    },
+    {
+      "id": 2073,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 3508,
+        "iconId": 196,
+        "options": []
+      }
+    },
+    {
+      "id": 2254,
+      "parentId": 11018,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": true,
+        "txtId": 5751,
+        "iconId": 197
+      }
+    },
+    {
+      "id": 2832,
+      "parentId": 11011,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 4373,
+          "value": 237,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2833,
+      "parentId": 11011,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 4374,
+          "value": 355,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2834,
+      "parentId": 11011,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 4375,
+          "value": 179,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2835,
+      "parentId": 11011,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 4376,
+          "value": 184,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2836,
+      "parentId": 11011,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 13258,
+          "value": 185,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2940,
+      "parentId": 11011,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 210,
+          "value": 102,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2946,
+      "parentId": 11011,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 0,
+        "iconId": 195,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 10869,
+          "value": -32768,
+          "unit": 23,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2951,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 153,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 11099,
+          "value": 30,
+          "unit": 26,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2975,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 924,
+        "headerId": 4757,
+        "iconId": 197,
+        "options": []
+      }
+    },
+    {
+      "id": 2991,
+      "parentId": 11017,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 64,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 10861,
+          "value": 0,
+          "unit": 4,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 2993,
+      "parentId": 11000,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 8458,
+        "headerId": 814,
+        "iconId": 95,
+        "options": []
+      }
+    },
+    {
+      "id": 2997,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 246,
+        "iconId": 15,
+        "options": []
+      }
+    },
+    {
+      "id": 3018,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 3667,
+        "iconId": 17,
+        "options": []
+      }
+    },
+    {
+      "id": 3043,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 4492,
+        "iconId": 64,
+        "options": []
+      }
+    },
+    {
+      "id": 3044,
+      "parentId": 11012,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 2618,
+        "headerId": 3661,
+        "iconId": 64,
+        "options": []
+      }
+    },
+    {
+      "id": 10180,
+      "parentId": 11015,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 1162,
+          "value": 236,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 10181,
+      "parentId": 11015,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 760,
+          "value": 260,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 10183,
+      "parentId": 11015,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 100,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 3842,
+          "value": 24,
+          "unit": 8,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 10184,
+      "parentId": 11015,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": true,
+        "txtId": 585,
+        "iconId": 99
+      }
+    },
+    {
+      "id": 10191,
+      "parentId": 11015,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 642,
+        "iconId": 98
+      }
+    },
+    {
+      "id": 10192,
+      "parentId": 11015,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 594,
+        "headerId": 3956,
+        "iconId": 100,
+        "options": []
+      }
+    },
+    {
+      "id": 10680,
+      "parentId": 11016,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 1162,
+          "value": 355,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 10681,
+      "parentId": 11016,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 760,
+          "value": 350,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 10683,
+      "parentId": 11016,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 100,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 3842,
+          "value": 45,
+          "unit": 8,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 10684,
+      "parentId": 11016,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": true,
+        "txtId": 585,
+        "iconId": 99
+      }
+    },
+    {
+      "id": 10691,
+      "parentId": 11016,
+      "type": 11,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Relay",
+        "workingStatus": false,
+        "txtId": 642,
+        "iconId": 98
+      }
+    },
+    {
+      "id": 10692,
+      "parentId": 11016,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 594,
+        "headerId": 3956,
+        "iconId": 100,
+        "options": []
+      }
+    },
+    {
+      "id": 11000,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 2584,
+        "iconId": 209
+      }
+    },
+    {
+      "id": 11001,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 112,
+        "iconId": 166
+      }
+    },
+    {
+      "id": 11002,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 128,
+        "iconId": 105
+      }
+    },
+    {
+      "id": 11011,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 1617,
+        "iconId": 50
+      }
+    },
+    {
+      "id": 11012,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 5246,
+        "iconId": 209
+      }
+    },
+    {
+      "id": 11015,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 3025,
+        "iconId": 137
+      }
+    },
+    {
+      "id": 11016,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 3026,
+        "iconId": 137
+      }
+    },
+    {
+      "id": 11017,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 6242,
+        "iconId": 64
+      }
+    },
+    {
+      "id": 11018,
+      "parentId": 0,
+      "type": 60,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "expanded": null,
+      "params": {
+        "description": "Container",
+        "txtId": 5223,
+        "iconId": 50
+      }
+    },
+    {
+      "id": 12056,
+      "parentId": 11002,
+      "type": 32,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Disinfection",
+        "txtId": 922,
+        "percentage": 0
+      }
+    },
+    {
+      "id": 12065,
+      "parentId": 11002,
+      "type": 6,
+      "menuId": 1004,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 1279,
+          "value": 500,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 12066,
+      "parentId": 11001,
+      "type": 6,
+      "menuId": 1276,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 6364,
+          "value": 396,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 12067,
+      "parentId": 11001,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 295,
+          "value": 40,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 12068,
+      "parentId": 11002,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 196,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 296,
+          "value": 50,
+          "unit": 7,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 12069,
+      "parentId": 11000,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 157,
+        "widget1": {
+          "txtId": 0,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 12518,
+          "value": 6439,
+          "unit": 0,
+          "type": 1,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 12070,
+      "parentId": 11000,
+      "type": 40,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Text information",
+        "statusId": 16028,
+        "headerId": 10618,
+        "iconId": 29,
+        "options": []
+      }
+    },
+    {
+      "id": 20150,
+      "parentId": 11018,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 17,
+        "widget1": {
+          "txtId": 834,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 585,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 20650,
+      "parentId": 11018,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 17,
+        "widget1": {
+          "txtId": 835,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 585,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 21150,
+      "parentId": 11018,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 1,
+        "iconId": 17,
+        "widget1": {
+          "txtId": 836,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 575,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "id": 23650,
+      "parentId": 11018,
+      "type": 6,
+      "menuId": 0,
+      "orderId": null,
+      "visibility": true,
+      "params": {
+        "description": "Universal status with widgets",
+        "statusId": 0,
+        "iconId": 17,
+        "widget1": {
+          "txtId": 1736,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "widget2": {
+          "txtId": 584,
+          "value": 0,
+          "unit": -1,
+          "type": 0,
+          "params": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "tilesOrder": null,
+  "tilesLastUpdate": "2026-02-26 20:29:47.929399+01"
+}

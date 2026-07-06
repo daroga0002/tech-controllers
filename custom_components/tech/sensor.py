@@ -1540,7 +1540,10 @@ class _TileWidgetSensorBase(TileSensor, SensorEntity):
             txt_id = params.get(other, {}).get("txtId", 0)
         suffix = ""
         if widget.get(CONF_TYPE) == WIDGET_DHW_PUMP:
-            suffix = self._NAME_SUFFIX_FOR_DHW.get(self._widget_key, "")
+            other_key = "widget2" if self._widget_key == "widget1" else "widget1"
+            other_widget = params.get(other_key, {})
+            if other_widget.get("txtId", 0) != 0:
+                suffix = self._NAME_SUFFIX_FOR_DHW.get(self._widget_key, "")
         return f"{assets.get_text(txt_id)}{suffix}"
 
     @property

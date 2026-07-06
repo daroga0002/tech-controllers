@@ -168,7 +168,7 @@ class TestUnitDivisors:
         """Pin the set of known unit codes to detect accidental additions."""
         # Codes outside the table fall back to a divisor of 1 in
         # _build_widget_tile / TileWidgetTemperatureSensor.get_state.
-        assert set(C.WIDGET_UNIT_DIVISORS.keys()) == {0, 4, 5, 6, 7}
+        assert set(C.WIDGET_UNIT_DIVISORS.keys()) == {0, 4, 5, 6, 7, 23, 26, 33}
 
 
 class TestTxtIdFallbacks:
@@ -393,3 +393,181 @@ class TestL12Fixture:
         types = {t["type"] for t in self.module["tiles"]}
         assert 50 in types
         assert 61 in types
+
+
+# ---------------------------------------------------------------------------
+# Fixture-driven assertions: ST-521 heat pump controller
+# ---------------------------------------------------------------------------
+
+
+class TestSt521Fixture:
+    """Live ST-521 heat-pump payload assertions.
+
+    Captured from a DEFRO DHP I Monotec 12 kW heat pump running ST-521
+    firmware v0.7.4.  Regression test for the "txtId 0 / value 0.0"
+    sensors bug (issue #178 upstream) and the DHW-suffix misclassification
+    that caused every widget to be labelled as a domestic-hot-water sensor.
+    """
+
+    @classmethod
+    def setup_class(cls):
+        """Load the captured ST-521 module payload once for the class."""
+        cls.module = _load("st521/module.json")
+
+    def test_no_zones(self):
+        """ST-521 exposes no climate zones."""
+        assert self.module["zones"]["elements"] == []
+
+    def test_widget_tile_count(self):
+        """ST-521 exposes 70 TYPE_WIDGET tiles."""
+        widgets = [t for t in self.module["tiles"] if t["type"] == C.TYPE_WIDGET]
+        assert len(widgets) == 70
+
+    def test_all_widget_tiles_have_two_widgets(self):
+        """Every TYPE_WIDGET tile carries both widget1 and widget2."""
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            params = tile["params"]
+            assert "widget1" in params and "widget2" in params
+
+    def test_widget1_is_placeholder(self):
+        """Most widget1 entries are placeholders (txtId=0) and skipped.
+
+        Four TYPE_WIDGET tiles carry real contact-sensor data in both
+        widget1 and widget2 (EU-i-3+ style dry-contact extension modules
+        with unit=-1, type=0).  Those 4 are real entities handled by
+        binary_sensor, not sensor.  The remaining 66 widget1 entries
+        all have txtId=0 -- verified placeholders.
+        """
+        placeholder_count = 0
+        real_count = 0
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            w1 = tile["params"]["widget1"]
+            if w1["txtId"] == 0:
+                placeholder_count += 1
+            else:
+                real_count += 1
+                # These are contact widgets consumed by binary_sensor
+                assert is_contact_widget_oracle(w1), (
+                    f"Tile {tile['id']}: non-zero txtId widget1 is not a contact"
+                )
+        assert placeholder_count == 66
+        assert real_count == 4
+
+    def test_widget2_has_nonzero_txtid(self):
+        """Every widget2 has a non-zero txtId (real data)."""
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            w2 = tile["params"]["widget2"]
+            assert w2["txtId"] != 0, (
+                f"Tile {tile['id']} widget2 txtId=0, expected non-zero"
+            )
+
+    def test_widget_dispatch_skips_placeholders(self):
+        """Only 66 non-contact widget entities survive dispatch.
+
+        70 widget2 entries all have non-zero txtId, but 4 are contact
+        widgets (unit=-1, type=0) that get handed off to binary_sensor.
+        66 widget1 entries are placeholders (txtId=0) and skipped.
+        The remaining 4 widget1 entries are contact widgets.
+
+        Result: 66 sensor-platform entities produced from TYPE_WIDGET tiles.
+        """
+        emitted = 0
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            for key in ("widget1", "widget2"):
+                w = tile["params"].get(key)
+                if not w or w.get("txtId", 0) == 0:
+                    continue
+                if is_contact_widget_oracle(w):
+                    continue
+                if w.get("unit") == 6:
+                    continue
+                emitted += 1
+        assert emitted == 66
+
+    def test_new_unit_codes_scale_correctly(self):
+        """Unit codes 23, 26, 33 scale values by 10 (bar, kW, %).
+
+        Skip the known sensor-error value (-32768) which means the sensor
+        is disconnected or damaged (documented on the ST-521 display as
+        "Anlagendruck (Fehlwert/Fühler fehlt)" for the system pressure).
+        """
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            w = tile["params"]["widget2"]
+            unit = w["unit"]
+            if unit == 23:
+                if w["value"] == -32768:
+                    continue
+                scaled = w["value"] / 10
+                assert 0 <= scaled <= 100, f"Bar value {scaled} out of range"
+            elif unit == 26:
+                scaled = w["value"] / 10
+                assert 0 <= scaled <= 100, f"kW value {scaled} out of range"
+            elif unit == 33:
+                scaled = w["value"] / 10
+                assert 0 <= scaled <= 100, f"% value {scaled} out of range"
+
+    def test_temperature_widgets_in_range(self):
+        """Unit=7 temperature widgets produce sane °C values."""
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            w = tile["params"]["widget2"]
+            if w["unit"] == 7:
+                scaled = w["value"] / 10
+                assert -30 <= scaled <= 120, (
+                    f"Temperature {scaled}°C out of range for tile {tile['id']}"
+                )
+
+    def test_dhw_suffix_not_applied_to_placeholder_pair(self):
+        """When widget1 is a placeholder (txtId=0), DHW suffix must be dropped.
+
+        The ST-521 firmware uses widget type=1 for *all* widgets, but only
+        real DHW pump pairs (both widgets with non-zero txtId) should get
+        the "Set Temperature" / "Current Temperature" suffix.
+        """
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            params = tile["params"]
+            w1 = params["widget1"]
+            w2 = params["widget2"]
+            if w2.get("type") == C.WIDGET_DHW_PUMP:
+                # widget1 is always a placeholder for ST-521, so the sibling
+                # has txtId=0 -- the DHW suffix must NOT be applied.
+                assert w1["txtId"] == 0, (
+                    f"Tile {tile['id']}: expected widget1 txtId=0, got {w1['txtId']}"
+                )
+
+    def test_expected_tile_type_distribution(self):
+        """Pin the per-type tile counts of the captured ST-521 fixture."""
+        counts = Counter(t["type"] for t in self.module["tiles"])
+        assert counts == {
+            C.TYPE_WIDGET: 70,
+            C.TYPE_RELAY: 17,
+            C.TYPE_TEXT: 22,
+            C.TYPE_SW_VERSION: 1,
+            C.TYPE_DISINFECTION: 1,
+            51: 1,  # peripheral SW version
+            60: 9,  # structural container references (like L-12 type 61)
+        }
+
+    def test_unit_codes_in_widgets(self):
+        """Verify the ST-521 widget unit codes include the newly added ones."""
+        units = set()
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            units.add(tile["params"]["widget2"]["unit"])
+        assert 23 in units, "unit=23 (bar×10) missing from ST-521"
+        assert 26 in units, "unit=26 (kW×10) missing from ST-521"
+        assert 33 in units, "unit=33 (percentage×10) missing from ST-521"
