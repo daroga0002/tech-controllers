@@ -168,7 +168,7 @@ class TestUnitDivisors:
         """Pin the set of known unit codes to detect accidental additions."""
         # Codes outside the table fall back to a divisor of 1 in
         # _build_widget_tile / TileWidgetTemperatureSensor.get_state.
-        assert set(C.WIDGET_UNIT_DIVISORS.keys()) == {0, 4, 5, 6, 7, 23, 26, 33}
+        assert set(C.WIDGET_UNIT_DIVISORS.keys()) == {0, 4, 5, 6, 7, 8, 23, 26, 33}
 
 
 class TestTxtIdFallbacks:
@@ -394,6 +394,117 @@ class TestL12Fixture:
         types = {t["type"] for t in self.module["tiles"]}
         assert 50 in types
         assert 61 in types
+
+
+# ---------------------------------------------------------------------------
+# Fixture-driven assertions: ST-2801 boiler controller
+# --------------------------------------------------------------------------
+
+
+class TestSt2801Fixture:
+    """Live ST-2801 boiler payload assertions.
+
+    Captured from a boiler running ST-2801 firmware v1.2.2.  Regression test
+    for the burner modulation readout bug (issue #195 upstream) where a
+    unit=8 percentage widget was misclassified as a DHW temperature sensor
+    and displayed as 0 °C instead of 0 %.
+    """
+
+    @classmethod
+    def setup_class(cls):
+        """Load the captured ST-2801 module payload once for the class."""
+        cls.module = _load("st2801/module.json")
+
+    def test_no_zones(self):
+        """ST-2801 boiler exposes no climate zones."""
+        assert self.module["zones"]["elements"] == []
+
+    def test_one_widget_tile(self):
+        """ST-2801 fixture exposes exactly one TYPE_WIDGET tile."""
+        widgets = [t for t in self.module["tiles"] if t["type"] == C.TYPE_WIDGET]
+        assert len(widgets) == 1
+
+    def test_widget_tile_has_two_widgets(self):
+        """The lone TYPE_WIDGET tile carries both widget1 and widget2."""
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            params = tile["params"]
+            assert "widget1" in params and "widget2" in params
+
+    def test_widget_uses_unit_8_percent(self):
+        """Both widgets in tile 10135 use unit=8 (raw percentage)."""
+        tile = self.module["tiles"][10]  # tile 10135 at index 10
+        assert tile["id"] == 10135
+        assert tile["type"] == C.TYPE_WIDGET
+        assert tile["params"]["widget1"]["unit"] == 8
+        assert tile["params"]["widget2"]["unit"] == 8
+
+    def test_unit_8_widgets_route_to_percentage(self):
+        """Unit=8 widgets must be dispatched to TileWidgetPumpSensor, not
+        TileWidgetTemperatureSensor.
+
+        Before the fix for #195, widget1 (type=1, unit=8, txtId=428
+        "Modulation") fell into the temperature branch and was displayed
+        as 0 °C instead of 0 %.
+        """
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            for key in ("widget1", "widget2"):
+                w = tile["params"].get(key)
+                if not w or w.get("txtId", 0) == 0:
+                    continue
+                if is_contact_widget_oracle(w):
+                    continue
+                if w.get("unit") == 6:
+                    continue
+                # After the fix, unit=8 is handled like COLLECTOR_PUMP --
+                # it must NOT fall into the temperature branch.
+                if w.get("unit") == 8:
+                    assert w.get("type") in (C.WIDGET_COLLECTOR_PUMP, C.WIDGET_DHW_PUMP), (
+                        f"Unit=8 widget dispatched as temperature: "
+                        f"type={w.get('type')}, txtId={w.get('txtId')}"
+                    )
+
+    def test_widget_dispatch_yields_two_percentage_sensors(self):
+        """Both widget1 and widget2 from tile 10135 survive dispatch."""
+        emitted = 0
+        for tile in self.module["tiles"]:
+            if tile["type"] != C.TYPE_WIDGET:
+                continue
+            for key in ("widget1", "widget2"):
+                w = tile["params"].get(key)
+                if not w or w.get("txtId", 0) == 0:
+                    continue
+                if is_contact_widget_oracle(w):
+                    continue
+                if w.get("unit") == 6:
+                    continue
+                emitted += 1
+        assert emitted == 2
+
+    def test_modulation_value_is_percent(self):
+        """Widget2 modulation value 14 must be a raw percentage (14%)."""
+        tile = self.module["tiles"][10]  # tile 10135
+        w2 = tile["params"]["widget2"]
+        assert w2["value"] == 14
+        assert w2["unit"] == 8
+        # raw percentage -- no scaling needed
+        assert C.WIDGET_UNIT_DIVISORS[8] == 1
+
+    def test_expected_tile_type_distribution(self):
+        """Pin the per-type tile counts of the captured ST-2801 fixture."""
+        counts = Counter(t["type"] for t in self.module["tiles"])
+        assert counts == {
+            C.TYPE_SW_VERSION: 1,
+            C.TYPE_TEMPERATURE: 6,  # 4 visible + 2 hidden
+            C.TYPE_TEXT: 2,
+            C.TYPE_RELAY: 1,
+            C.TYPE_FIRE_SENSOR: 1,
+            C.TYPE_WIDGET: 1,
+            41: 1,  # date tile
+        }
 
 
 # ---------------------------------------------------------------------------

@@ -383,7 +383,7 @@ def _build_widget_tile(
         if widget.get("unit") == 6:
             continue
         widget_type = widget.get(CONF_TYPE)
-        if widget_type == WIDGET_COLLECTOR_PUMP:
+        if widget_type == WIDGET_COLLECTOR_PUMP or widget.get("unit") == 8:
             entities.append(
                 TileWidgetPumpSensor(tile, coordinator, config_entry, widget_key)
             )

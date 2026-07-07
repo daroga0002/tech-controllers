@@ -143,6 +143,7 @@ WIDGET_TEMPERATURE_CH = 9  # Central-heating temperature reading
 #  * 6   -- enum/mode badge (no numeric meaning -- :func:`_build_widget_tile`
 #           skips these to avoid creating useless "always 0" sensors)
 #  * 7   -- tenths of a degree (the most common boiler temperature unit)
+#  * 8   -- raw percentage (modulation, fan speed, pump duty cycle)
 #  * 23  -- tenths of a bar (pressure sensor, observed on ST-521)
 #  * 26  -- tenths of a kW (power sensor, observed on ST-521)
 #  * 33  -- tenths of a percent (mixer opening, observed on ST-521)
@@ -153,6 +154,7 @@ WIDGET_UNIT_DIVISORS = {
     5: 100,
     6: 1,
     7: 10,
+    8: 1,
     23: 10,
     26: 10,
     33: 10,
