@@ -63,7 +63,7 @@
   scripts.tests = {
     exec = ''
       echo '🧪 Running tests'
-      pytest tests/tests_api --cov-report=term-missing --cov=custom_components.tech.tech tests/
+      pytest tests/ --cov-report=term-missing --cov=custom_components.tech.tech
     '';
     description = "Test integration";
   };
@@ -107,6 +107,6 @@
   # https://devenv.sh/tests/
   enterTest = ''
     echo '🧪 Running tests'
-    pytest tests/tests_api --cov-report=term-missing --cov=custom_components.tech.tech tests/
+    pytest tests/ --cov-report=term-missing --cov=custom_components.tech.tech
   '';
 }
