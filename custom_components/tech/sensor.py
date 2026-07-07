@@ -1200,7 +1200,7 @@ class _TileWidgetSensorBase(TileSensor, SensorEntity):
             other_widget = params.get(other_key, {})
             if other_widget.get("txtId", 0) != 0:
                 suffix = self._NAME_SUFFIX_FOR_DHW.get(self._widget_key, "")
-        return f"{assets.get_text(txt_id)}{suffix}"
+        return f"{self.coordinator.translations.get_text(txt_id)}{suffix}"
 
     @property
     def unique_id(self) -> str:
