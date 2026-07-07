@@ -11,6 +11,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
+from .assets import Translations
 from .const import API_TIMEOUT, CONTROLLER, DOMAIN, SCAN_INTERVAL, UDID
 from .tech import Tech, TechError, TechLoginError
 
@@ -43,6 +44,9 @@ class TechCoordinator(DataUpdateCoordinator):
             update_interval=SCAN_INTERVAL,
         )
         self.api = Tech(session, user_id, token)
+        # Replaced with the fetched catalog in ``async_setup_entry`` before
+        # any platform is set up; the empty default keeps lookups safe.
+        self.translations = Translations()
 
     async def _async_update_data(self) -> dict:
         """Fetch the latest module data for the configured controller.
@@ -62,8 +66,10 @@ class TechCoordinator(DataUpdateCoordinator):
 
         try:
             async with asyncio.timeout(API_TIMEOUT):
+                # force=True: the coordinator owns the polling cadence and must
+                # bypass the freshness cache that coalesces the setup-time burst.
                 return await self.api.module_data(
-                    self.config_entry.data[CONTROLLER][UDID]
+                    self.config_entry.data[CONTROLLER][UDID], force=True
                 )
         except TechLoginError as err:
             raise ConfigEntryAuthFailed from err

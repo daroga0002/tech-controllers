@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Uređaj već konfiguriran",
-            "no_modules": "Nisu otkriveni ili odabrani moduli"
+            "no_modules": "Nisu otkriveni ili odabrani moduli",
+            "controllers_configured": "Odabrani kontroleri su dodani"
         },
         "error": {
             "cannot_connect": "Nemoguće povezivanje s Tech API-jem.",

@@ -50,9 +50,7 @@ async def async_setup_entry(
 
     menus = await coordinator.api.get_module_menus(controller_udid)
     zones = await coordinator.api.get_module_zones(controller_udid)
-    group_names = assets.build_menu_group_names(menus)
-    zone_assignments = assets.build_menu_zone_assignments(menus, zones)
-    depths = assets.compute_menu_depths(menus)
+    ctx = assets.build_menu_context(menus, zones, coordinator.translations)
 
     entities: list[MenuSwitchEntity] = []
     for key, item in menus.items():
@@ -62,7 +60,7 @@ async def async_setup_entry(
             continue
         # Skip items deeper than the registration limit -- on L-12 there are
         # 650 ON_OFF items, most of them deep under per-zone subgroups.
-        if depths[key] > MENU_DEPTH_REGISTRATION_LIMIT:
+        if ctx.depths[key] > MENU_DEPTH_REGISTRATION_LIMIT:
             continue
         entities.append(
             MenuSwitchEntity(
@@ -70,9 +68,9 @@ async def async_setup_entry(
                 key,
                 coordinator,
                 config_entry,
-                group_names,
-                depth=depths[key],
-                zone_id=zone_assignments.get(key),
+                ctx.group_names,
+                depth=ctx.depths[key],
+                zone_id=ctx.zone_assignments.get(key),
             )
         )
 
@@ -121,7 +119,9 @@ class MenuSwitchEntity(CoordinatorEntity, SwitchEntity):
 
         # ``_attr_has_entity_name = True`` lets HA prepend the device name from
         # ``device_info`` automatically -- the entity name is the menu label only.
-        self._name = assets.menu_entity_name(item, group_names, "")
+        self._name = assets.menu_entity_name(
+            item, group_names, coordinator.translations
+        )
 
         self._disabled = depth > MENU_DEPTH_DEFAULT_ENABLED_LIMIT
 

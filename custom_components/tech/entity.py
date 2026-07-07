@@ -9,8 +9,9 @@ encapsulates three responsibilities common to every tile:
    accounts paired to the same HA instance.
 2. **Naming** -- the tile's localised label is resolved from a small
    precedence chain (per-tile ``txtId`` -> :data:`const.TXT_ID_BY_TYPE`
-   -> :func:`assets.get_text_by_type`). Tiles whose per-tile txtId is a
-   *status* string rather than a label (additional pump, disinfection)
+   -> :meth:`assets.Translations.get_text_by_type`). Tiles whose per-tile
+   txtId is a *status* string rather than a label (additional pump,
+   disinfection)
    skip the per-tile entry. A negative or zero txtId is treated as
    "no label".
 3. **Device grouping** -- :meth:`TileEntity.device_info` returns the
@@ -45,7 +46,6 @@ from homeassistant.helpers import entity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from . import assets
 from .const import (
     CONTROLLER,
     DOMAIN,
@@ -119,9 +119,9 @@ class TileEntity(
         if txt_id <= 0 or tile_type in TXT_ID_IS_STATUS_FOR_TYPES:
             txt_id = TXT_ID_BY_TYPE.get(tile_type, 0)
         if txt_id > 0:
-            self._name = assets.get_text(txt_id)
+            self._name = coordinator.translations.get_text(txt_id)
         else:
-            self._name = assets.get_text_by_type(tile_type)
+            self._name = coordinator.translations.get_text_by_type(tile_type)
 
     @property
     def device_info(self) -> DeviceInfo | None:

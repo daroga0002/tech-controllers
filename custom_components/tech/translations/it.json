@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Dispositivo già configurato",
-            "no_modules": "Nessun modulo rilevato o selezionato"
+            "no_modules": "Nessun modulo rilevato o selezionato",
+            "controllers_configured": "I controller selezionati sono stati aggiunti"
         },
         "error": {
             "cannot_connect": "Impossibile connettersi all'API di Tech.",

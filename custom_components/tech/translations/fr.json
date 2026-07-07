@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Appareil déjà configuré",
-            "no_modules": "Aucun module détecté ou sélectionné"
+            "no_modules": "Aucun module détecté ou sélectionné",
+            "controllers_configured": "Les contrôleurs sélectionnés ont été ajoutés"
         },
         "error": {
             "cannot_connect": "Impossible de se connecter à l'API Tech.",

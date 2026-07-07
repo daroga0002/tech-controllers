@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Įrenginys jau sukonfigūruotas",
-            "no_modules": "Nerasta modulių arba nepasirinkta"
+            "no_modules": "Nerasta modulių arba nepasirinkta",
+            "controllers_configured": "Pasirinkti valdikliai buvo pridėti"
         },
         "error": {
             "cannot_connect": "Nepavyksta prisijungti prie Tech API.",

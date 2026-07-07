@@ -53,7 +53,9 @@ WORKING_STATUS = "workingStatus"  # bool: relay/pump on/off in tile payload
 ACTUATORS = "actuators"  # zone payload: list of valve actuator descriptors
 BATTERY_LEVEL = "batteryLevel"  # wireless temp sensor %, may be None
 ACTUATORS_OPEN = "actuatorsOpen"  # zone payload: count of opened actuators
-INCLUDE_HUB_IN_NAME = "include_hub_in_name"  # config flag (now effectively a no-op for tile entities)
+INCLUDE_HUB_IN_NAME = (
+    "include_hub_in_name"  # config flag (now effectively a no-op for tile entities)
+)
 UNDERFLOOR = "underfloor"  # zone payload: optional underfloor sub-config
 WINDOW_SENSORS = "windowsSensors"  # zone payload: list of window-sensor descriptors
 WINDOW_STATE = "windowState"  # individual window sensor open/closed key
@@ -93,6 +95,13 @@ PLATFORMS = [
 # polling, and the boiler tile data does not change faster than ~60s anyway.
 SCAN_INTERVAL: Final = timedelta(seconds=60)
 API_TIMEOUT: Final = 60
+
+# A fetched module payload is reused for this many seconds. The seven HA
+# platforms each call get_module_zones/tiles/menus during setup; without this
+# guard every call would trigger its own full (rate-limited) cloud refresh.
+# The coordinator passes force=True to refresh on its own SCAN_INTERVAL cadence
+# regardless of cache age, so live telemetry is never stale beyond one poll.
+MODULE_DATA_CACHE_TTL: Final = SCAN_INTERVAL.total_seconds()
 
 # ---------------------------------------------------------------------------
 # Tile types  (the ``type`` field on each tile in the /tiles API response)
@@ -178,7 +187,7 @@ ICON_BY_TYPE = {
 # When a tile has no ``txtId`` (or the per-tile txtId carries a status string
 # rather than a label -- see :data:`TXT_ID_IS_STATUS_FOR_TYPES`), fall back
 # to a hard-coded txtId per tile type. The numbers are looked up in the Tech
-# i18n translation pack at startup (see :func:`assets.load_subtitles`).
+# i18n translation pack at startup (see :meth:`assets.Translations.load`).
 TXT_ID_BY_TYPE = {
     TYPE_FIRE_SENSOR: 205,
     TYPE_ADDITIONAL_PUMP: 576,  # "Pompa dodatkowa" -- per-tile txtId is "Disabled"

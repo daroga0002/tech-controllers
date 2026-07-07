@@ -2,7 +2,8 @@
     "config": {
         "abort": {
             "already_configured": "Az eszköz már konfigurálva van",
-            "no_modules": "Nem találhatóak modulok vagy nincsenek kiválasztva"
+            "no_modules": "Nem találhatóak modulok vagy nincsenek kiválasztva",
+            "controllers_configured": "A kiválasztott vezérlők hozzáadva"
         },
         "error": {
             "cannot_connect": "Nem sikerült kapcsolódni a Tech API-hoz.",

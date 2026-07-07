@@ -1,63 +1,64 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Urządzenie jest już skonfigurowane",
-            "no_modules": "Nie wykryto lub nie dodano żadnych sterowników"
-        },
-        "error": {
-            "cannot_connect": "Nie można się połączyć z Tech API.",
-            "invalid_auth": "Nieprawidłowa nazwa uzytkownika lub hasło!",
-            "unknown": "Nieznany błąd. Spróbuj ponownie lub zgłoś błąd do ..."
-        },
-        "step": {
-            "user": {
-                "title": "Logowanie do eModul",
-                "description": "Wprowadź swoje dane logowania do usługi emodul.eu lub emodul.pl.",
-                "data": {
-                    "password": "Hasło",
-                    "username": "Użytkownik"
-                }
-            },
-            "select_controllers": {
-                "title": "Wybór sterownika",
-                "description": "Wybierz sterowniki, które chcesz zintegrować.",
-                "data": {
-                    "controllers": "Sterowniki do zintegrowania",
-                    "include_hub_in_name": "Umieść nazwę hub'a (kontrolera) w nazwach encji"
-                }
-            }
-        }
+  "config": {
+    "abort": {
+      "already_configured": "Urządzenie jest już skonfigurowane",
+      "no_modules": "Nie wykryto lub nie dodano żadnych sterowników",
+      "controllers_configured": "Wybrane sterowniki zostały dodane"
     },
-    "entity": {
-        "sensor": {
-          "temperature_entity": {
-            "name": "{entity_name} Temperatura"
-          },
-          "battery_entity": {
-            "name": "{entity_name} Bateria"
-          },
-          "humidity_entity": {
-            "name": "Wilgotność"
-          },
-          "actuator_entity": {
-            "name": "Siłownik {actuator_number}"
-          },
-          "underfloor_entity": {
-            "name": "Podłogówka"
-          },
-          "window_sensor_entity": {
-            "name": "Okno {window_number}"
-          },
-          "ext_temperature_entity": {
-            "name": "Temperatura zewnętrzna"
-          },
-          "signal_strength_entity": {
-            "name": "{entity_name} Siła sygnału"
-          },
-          "zone_state_entity": {
-            "name": "{entity_name} Stan alarmu"
-          }
+    "error": {
+      "cannot_connect": "Nie można się połączyć z Tech API.",
+      "invalid_auth": "Nieprawidłowa nazwa uzytkownika lub hasło!",
+      "unknown": "Nieznany błąd. Spróbuj ponownie lub zgłoś błąd do ..."
+    },
+    "step": {
+      "user": {
+        "title": "Logowanie do eModul",
+        "description": "Wprowadź swoje dane logowania do usługi emodul.eu lub emodul.pl.",
+        "data": {
+          "password": "Hasło",
+          "username": "Użytkownik"
         }
       },
-    "title": "Tech Sterowniki"
+      "select_controllers": {
+        "title": "Wybór sterownika",
+        "description": "Wybierz sterowniki, które chcesz zintegrować.",
+        "data": {
+          "controllers": "Sterowniki do zintegrowania",
+          "include_hub_in_name": "Umieść nazwę hub'a (kontrolera) w nazwach encji"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature_entity": {
+        "name": "{entity_name} Temperatura"
+      },
+      "battery_entity": {
+        "name": "{entity_name} Bateria"
+      },
+      "humidity_entity": {
+        "name": "Wilgotność"
+      },
+      "actuator_entity": {
+        "name": "Siłownik {actuator_number}"
+      },
+      "underfloor_entity": {
+        "name": "Podłogówka"
+      },
+      "window_sensor_entity": {
+        "name": "Okno {window_number}"
+      },
+      "ext_temperature_entity": {
+        "name": "Temperatura zewnętrzna"
+      },
+      "signal_strength_entity": {
+        "name": "{entity_name} Siła sygnału"
+      },
+      "zone_state_entity": {
+        "name": "{entity_name} Stan alarmu"
+      }
+    }
+  },
+  "title": "Tech Sterowniki"
 }
