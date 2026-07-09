@@ -441,8 +441,7 @@ class TestSt2801Fixture:
         assert tile["params"]["widget2"]["unit"] == 8
 
     def test_unit_8_widgets_route_to_percentage(self):
-        """Unit=8 widgets must be dispatched to TileWidgetPumpSensor, not
-        TileWidgetTemperatureSensor.
+        """Unit=8 widgets must be dispatched to TileWidgetPumpSensor, not TileWidgetTemperatureSensor.
 
         Before the fix for #195, widget1 (type=1, unit=8, txtId=428
         "Modulation") fell into the temperature branch and was displayed
@@ -462,7 +461,10 @@ class TestSt2801Fixture:
                 # After the fix, unit=8 is handled like COLLECTOR_PUMP --
                 # it must NOT fall into the temperature branch.
                 if w.get("unit") == 8:
-                    assert w.get("type") in (C.WIDGET_COLLECTOR_PUMP, C.WIDGET_DHW_PUMP), (
+                    assert w.get("type") in (
+                        C.WIDGET_COLLECTOR_PUMP,
+                        C.WIDGET_DHW_PUMP,
+                    ), (
                         f"Unit=8 widget dispatched as temperature: "
                         f"type={w.get('type')}, txtId={w.get('txtId')}"
                     )
