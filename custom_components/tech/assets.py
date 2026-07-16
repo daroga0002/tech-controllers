@@ -257,8 +257,12 @@ def build_menu_zone_assignments(
     assignments: dict[str, int] = {}
     for sg_id, zone_id in subgroup_to_zone.items():
         queue = [sg_id]
+        visited: set[int] = set()
         while queue:
             parent_id = queue.pop()
+            if parent_id in visited:
+                continue
+            visited.add(parent_id)
             for child_key in all_children.get((mt, parent_id), []):
                 assignments[child_key] = zone_id
                 child_item = menus[child_key]
